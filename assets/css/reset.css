@@ -1,0 +1,20 @@
+/*reset style*/
+button {
+    display: block;
+    width: 70px;
+    height: 28px;
+    border: 1px solid #26aeeb;
+    background: #fff;
+    font-size: 12px;
+    color: #26aeeb;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+button:focus {
+    outline: none;
+}
+
+.hide {
+    display: none!important;
+}

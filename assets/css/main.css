@@ -1,0 +1,197 @@
+.header-title {
+    height: 40px;
+    padding-left: 16px;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 40px;
+    color: #666;
+}
+
+.list {
+    position: relative;
+    display: -webkit-box;
+    -webkit-box-align: center;
+    -webkit-box-pack: justify;
+    padding: 0 24px;
+    height: 50px;
+}
+
+.list:hover {
+    background: #d9f5f8;
+}
+
+.icon-finder {
+    display: -webkit-box;
+    width: 26px;
+    height: 26px;
+    line-height: 26px;
+    font-size: 26px;
+    color: #62b9dc;
+}
+
+.icon-finder:hover::before {
+    content: "\e603";
+}
+
+.project-name {
+    font-size: 12px;
+    color: #666;
+}
+
+.project-location {
+    font-size: 12px;
+    color: #999;
+}
+
+.project-info {
+    width: 280px;
+    overflow: hidden;
+}
+
+.project-point {
+    font-size: 12px;
+    color: #2db7f5;
+}
+
+.list-info-img {
+    display: -webkit-box;
+    width: 20px;
+    height: 20px;
+    color: #62b9dc;
+    font-size: 20px;
+    line-height: 24px;
+}
+
+.list-info-img img:hover {
+    /*cursor: pointer;*/
+}
+
+.active {
+    background: #ccf1f6;
+}
+
+.active:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 50px;
+    background: #41cbdd;
+}
+
+.running:after {
+    content: '';
+    position: absolute;
+    top: 22px;
+    left: 10px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #e64444;
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}
+
+.btn-box {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 400px;
+    height: 70px;
+}
+
+.tools {
+    display: flex;
+    justify-content: space-between;
+    height: 24px;
+    padding: 0 10px;
+    border-top: 1px solid #ddd;
+}
+
+.tool-btn {
+    width: 130px;
+}
+
+.tool-btn span {
+    display: inline-block;
+    vertical-align: middle;
+    width: 28px;
+    height: 30px;
+    background-size: 100% auto;
+    color: #26aeeb;
+}
+
+.tool-add, .tool-del, .tool-find, .tool-setting {
+    font-size: 20px;
+}
+
+.tool-add {
+    line-height: 26px;
+}
+
+.tool-del {
+    line-height: 26px;
+}
+
+.tool-find {
+    line-height: 20px;
+}
+
+.tool-setting {
+    line-height: 22px;
+}
+
+.tool-state {
+    display: flex;
+    justify-content: space-between;
+    width: 60px;
+    font-size: 14px;
+    color: #70c53e;
+}
+
+.state-done {
+    color: #80cb54;
+    font-size: 18px;
+}
+.state-running {
+    color: #999;
+    font-size: 18px;
+}
+
+/*welcome reset style*/
+.welcome-img {
+    border: 1px solid #26aeeb;
+    display: block;
+    margin: 70px auto 0;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+}
+
+.welcome-title, .welcome-text {
+    text-align: center;
+    line-height: 1;
+    font-weight: normal;
+}
+
+.welcome-title {
+    margin: 20px auto 10px;
+    color: #33b3ed;
+    font-size: 26px;
+}
+
+.welcome-text {
+    font-size: 14px;
+    color: #666;
+}
+.welcome-example {
+    margin: 100px auto 0;
+    width: 120px;
+    height: 30px;
+}
