@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <link rel="stylesheet" href="assets/css/iconfont.css">
-        <link rel="stylesheet" href="assets/css/weui.min.css">
+        <!--<link rel="stylesheet" href="assets/css/weui.min.css">-->
         <link rel="stylesheet" href="assets/css/reset.css">
         <link rel="stylesheet" href="assets/css/main.css">
         <title>fdFlow</title>
@@ -65,7 +65,9 @@
                 <div class="tool-btn">
                     <span class="tool-add iconfont icon-jia"></span>
                     <span class="tool-del iconfont icon-jian"></span>
-                    <span class="tool-find iconfont icon-wenjianjia"></span>
+                    <span class="tool-find iconfont icon-wenjianjia">
+                        <input class="input-open" id="jsOpenProject" type="file" webkitdirectory multiple>
+                    </span>
                     <span class="tool-setting iconfont icon-shezhi"></span>
                 </div>
                 <div class="tool-state">
@@ -76,6 +78,45 @@
                 </div>
             </section>
         </footer>
+
+        <article class="setting-view hide">
+            <header class="setting-btn-top">
+                <i class="iconfont icon-bangzhu"></i>
+                <i class="iconfont icon-guanbi"></i>
+            </header>
+            <h2 class="setting-title">工作区路径</h2>
+            <input type="text" class="setting-workspace" id="settingWorkspace" title="工作区路径"/>
+            <h2 class="setting-title">功能</h2>
+            <ul class="setting-list">
+                <li>
+                    <span class="iconfont icon-xuanze"></span>
+                    <span class="list-text">是否是活动项目</span>
+                </li>
+                <li>
+                    <span class="iconfont icon-xuanze"></span>
+                    <span class="list-text">编译时是否需要添加 cdn</span>
+                </li>
+            </ul>
+            <h2 class="setting-title">默认设置</h2>
+            <ul class="setting-list">
+                <li>
+                    <input type="text" class="setting-input" title="项目作者">
+                    <span class="label">项目作者</span>
+                </li>
+                <li>
+                    <input type="text" class="setting-input" title="默认的CDN路径">
+                    <span class="label">默认的CDN路径</span>
+                </li>
+                <li>
+                    <input type="text" class="setting-input" title="最新的安卓版本号">
+                    <span class="label">最新的安卓版本号,代码中的占位符为 @@androidVer</span>
+                </li>
+                <li>
+                    <input type="text" class="setting-input" title="sass 库">
+                    <span class="label">引入的 sass 库,默认采用了 nuts-scss 库,使用时需要先安装。传入的值需要是一个数组。</span>
+                </li>
+            </ul>
+        </article>
         <script src="./src/index.js"></script>
         <script src="./src/menu.js"></script>
     </body>

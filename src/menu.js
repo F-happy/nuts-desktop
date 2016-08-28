@@ -2,7 +2,6 @@
  * Created by fuhuixiang on 16-8-26.
  */
 "use strict";
-const electron = require('electron');
 const Menu = electron.remote.Menu;
 
 let template = [

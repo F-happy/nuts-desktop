@@ -125,6 +125,7 @@ footer {
     height: 30px;
     background-size: 100% auto;
     color: #26aeeb;
+    overflow: hidden;
 }
 
 .tool-add, .tool-del, .tool-find, .tool-setting {
@@ -155,13 +156,27 @@ footer {
     color: #70c53e;
 }
 
+.state-done, .state-running {
+    line-height: 28px;
+}
+
 .state-done {
     color: #80cb54;
     font-size: 18px;
 }
+
 .state-running {
     color: #999;
     font-size: 18px;
+}
+
+.input-open {
+    position: relative;
+    left: 0;
+    top: -20px;
+    width: 22px;
+    height: 22px;
+    opacity: 0;
 }
 
 /*welcome reset style*/
@@ -190,8 +205,16 @@ footer {
     font-size: 14px;
     color: #666;
 }
+
 .welcome-example {
     margin: 100px auto 0;
     width: 120px;
     height: 30px;
+}
+
+/*setting view style*/
+.setting-view {
+    position: fixed;
+    top: 0;
+    left: 0;
 }
