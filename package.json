@@ -41,6 +41,7 @@
     "gulp-rename": "^1.2.2",
     "gulp-replace-pro": "^1.0.0",
     "gulp-sass": "^2.3.2",
+    "jquery": "^3.1.0",
     "lodash": "^4.15.0",
     "nuts-scss": "^1.0.3",
     "through2": "^2.0.1",

@@ -5,8 +5,9 @@
 "use strict";
 const fs = require('fs');
 
-module.exports = (projectDir)=> {
+module.exports = (projectDir, callback)=> {
     deleteFolderRecursive(projectDir);
+    callback();
 };
 
 function deleteFolderRecursive(path) {

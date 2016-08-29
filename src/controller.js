@@ -48,7 +48,7 @@ class Controller {
                     {
                         test: /\.js$/, loader: 'babel-loader', exclude: '/node_modules/',
                         query: {
-                            // presets: ['es2015']  暂时放弃es6的编译,因为 electron 暂时不支持。
+                            //presets: [`${__dirname}/es2015`]  //暂时放弃es6的编译,因为 electron 暂时不支持。
                         }
                     }
                 ]

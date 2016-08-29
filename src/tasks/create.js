@@ -13,12 +13,11 @@ const fs            = require("fs"),
 
 module.exports = (projectName)=> {
     let projectDir = path.join(workspace, projectName);
-    fs.exists(projectDir, (err)=> {
-        if (err) {
-            return false;
+    fs.exists(projectDir, (msg)=> {
+        if (msg) {
+            console.log(msg);
         } else {
             createProject(projectDir, projectName);
-            return true;
         }
     });
 };
