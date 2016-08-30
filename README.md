@@ -2,7 +2,7 @@
 this is nuts workflow GUI
 
 ## 界面预览
-![workflow](./view.jpeg)
+![workflow](./view.png)
 
 
 ## 开发环境
