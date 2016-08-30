@@ -7,6 +7,11 @@
     color: #666;
 }
 
+.project-lists {
+    max-height: 460px;
+    overflow-y: auto;
+}
+
 .list {
     position: relative;
     display: -webkit-box;
@@ -17,6 +22,10 @@
 }
 
 .list:hover {
+    background: #d9f5f8;
+}
+
+.list:hover input {
     background: #d9f5f8;
 }
 
@@ -39,12 +48,16 @@
 }
 
 .project-location {
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     font-size: 12px;
     color: #999;
 }
 
 .project-info {
-    width: 280px;
+    width: 275px;
     overflow: hidden;
 }
 
@@ -170,6 +183,11 @@ footer {
     font-size: 18px;
 }
 
+.dev-running {
+    border-color: #80cb54;
+    color: #80cb54;
+}
+
 .input-open {
     position: relative;
     left: 0;
@@ -217,4 +235,11 @@ footer {
     position: fixed;
     top: 0;
     left: 0;
+}
+
+.add-project-input {
+    height: 20px;
+    line-height: 20px;
+    border: none;
+    outline: none;
 }

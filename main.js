@@ -32,7 +32,7 @@ function createWindow() {
     win.loadURL(`file://${__dirname}/index.html`);
 
     // 打开开发工具页面
-    win.webContents.openDevTools();
+    // win.webContents.openDevTools();
 
     // 当窗口关闭时调用的方法
     win.on('closed', () => {
