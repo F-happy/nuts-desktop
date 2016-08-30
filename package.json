@@ -6,11 +6,11 @@
   "main": "main.js",
   "scripts": {
     "start": "./node_modules/.bin/electron main.js",
-    "build:linux32": "electron-packager ./ fdFlow --platform=linux --arch=ia32 --icon=./assets/img/fd.icns --overwrite --out ./dist/$npm_package_version --version=0.37.8 --ignore='(.github|.DS_Store)'",
-    "build:linux64": "electron-packager ./ fdFlow --platform=linux --arch=x64 --icon=./assets/img/fd.icns --overwrite --out ./dist/$npm_package_version --version=0.37.8 --ignore='(.github|.DS_Store)'",
-    "build:mac": "rm -rf dist && electron-packager ./ fdFlow --platform=darwin --arch=x64 --icon=./assets/img/fd.icns --overwrite --out ./dist/$npm_package_version --version=1.3.4 --ignore='(.github|.DS_Store)'",
-    "build:win32": "electron-packager ./ fdFlow --platform=win32 --arch=ia32 --icon=./assets/img/fd.png --overwrite --out ./dist --version=0.37.8 --ignore=.github",
-    "build:win64": "electron-packager ./ fdFlow --platform=win32 --arch=x64 --icon=./assets/img/fd.png --overwrite --out ./dist --version=0.37.8 --ignore=.github",
+    "build:linux32": "rm -rf dist && electron-packager ./ fdFlow --platform=linux --arch=ia32 --icon=./assets/img/fd.icns --overwrite --out ./dist/$npm_package_version --version=0.37.8 --ignore='(.github|.DS_Store)'",
+    "build:linux64": "rm -rf dist && electron-packager ./ fdFlow --platform=linux --arch=x64 --icon=./assets/img/fd.icns --overwrite --out ./dist/$npm_package_version --version=0.37.8 --ignore='(.github|.DS_Store)'",
+    "build:mac": "rm -rf dist && electron-packager ./ fdFlow --platform=darwin --arch=x64 --icon=./assets/img/fd.icns --overwrite --out ./dist/$npm_package_version --version=1.2.8 --ignore='(.github|.DS_Store)'",
+    "build:win32": "rm -rf dist && electron-packager ./ fdFlow --platform=win32 --arch=ia32 --icon=./assets/img/fd.png --overwrite --out ./dist --version=0.37.8 --ignore=.github",
+    "build:win64": "rm -rf dist && electron-packager ./ fdFlow --platform=win32 --arch=x64 --icon=./assets/img/fd.png --overwrite --out ./dist --version=1.2.8 --ignore=.github",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

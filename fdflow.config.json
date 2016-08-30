@@ -1,5 +1,8 @@
 {
     "author": "fdFlow",
     "androidVer": 120,
-    "activity": false
+    "activity": false,
+    "needCDN": false,
+    "staticURL": "http://cdn.jonnyf.com",
+    "staticDir": "static"
 }

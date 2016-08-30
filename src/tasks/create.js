@@ -33,7 +33,7 @@ function createProject(projectDir, projectName) {
         .pipe(core.dest(`${projectDir}/`));
 
     core.src(`${templatesPath}/scss/main.scss`)
-        .pipe(renamePlugin(name + '.scss'))
+        .pipe(renamePlugin(`${projectName}.scss`))
         .pipe(core.dest(`${projectDir}/scss`));
 
     core.src(`${templatesPath}/js/main.tmpl`)

@@ -12,12 +12,17 @@ let template = [
                 label: '新建项目',
                 accelerator: 'CmdOrCtrl+N',
                 click: function (item, focusedWindow) {
+                    newProject();
                 }
             },
             {
                 label: '打开项目…',
                 accelerator: 'CmdOrCtrl+O',
                 click: function (item, focusedWindow) {
+                    let projectPath = remote.dialog.showOpenDialog({ properties: [ 'openDirectory' ]});
+                    if(projectPath && projectPath.length){
+                        openProject(projectPath[0]);
+                    }
                 }
             },
             {
@@ -76,43 +81,16 @@ let template = [
                 label: '执行 开发流程',
                 accelerator: 'CmdOrCtrl+1',
                 click: function (item, focusedWindow) {
+                    runTask();
                 }
             },
             {
                 label: '执行 生产流程',
                 accelerator: 'CmdOrCtrl+2',
                 click: function (item, focusedWindow) {
+                    distTask();
                 }
             },
-            {
-                label: 'FTP 发布部署',
-                accelerator: 'CmdOrCtrl+3',
-                click: function (item, focusedWindow) {
-                }
-            },
-            {
-                label: 'Zip 打包',
-                accelerator: 'CmdOrCtrl+4',
-                click: function (item, focusedWindow) {
-                }
-            }
-        ]
-    },
-    {
-        label: '项目',
-        submenu: [
-            {
-                label: '进入当前项目配置',
-                accelerator: 'CmdOrCtrl+/',
-                click: function (item, focusedWindow) {
-                }
-            },
-            {
-                label: '删除当前选中项目',
-                accelerator: 'CmdOrCtrl+shift+D',
-                click: function (item, focusedWindow) {
-                }
-            }
         ]
     },
     {
@@ -133,6 +111,7 @@ let template = [
                 label: '调试模式',
                 accelerator: 'Option+CmdOrCtrl+I',
                 click: function () {
+                    remote.getCurrentWindow().webContents.toggleDevTools();
                 }
             }
         ]
@@ -142,18 +121,21 @@ let template = [
         role: 'help',
         submenu: [
             {
-                label: 'WeFlow 使用帮助',
+                label: 'fdFlow 使用帮助',
                 click: function () {
+                    electron.shell.openExternal('https://github.com/F-happy/nuts-desktop');
                 }
             },
             {
-                label: 'WeFlow 官网',
+                label: 'fdFlow 官网',
                 click: function () {
+                    electron.shell.openExternal('https://github.com/F-happy/nuts-desktop');
                 }
             },
             {
                 label: '建议 或 反馈…',
                 click: function () {
+                    electron.shell.openExternal('https://github.com/F-happy/nuts-desktop/issues');
                 }
             }
         ]
@@ -165,19 +147,20 @@ if (process.platform === 'darwin') {
         label: name,
         submenu: [
             {
-                label: '关于 WeFlow',
+                label: '关于 fdFlow',
                 click: function (item, focusedWindow) {
+                    electron.shell.openExternal('https://github.com/F-happy/nuts-desktop');
                 }
             },
             {
                 type: 'separator'
             },
-            {
-                label: '偏好设置',
-                accelerator: 'CmdOrCtrl+,',
-                click: function () {
-                }
-            },
+            // {
+            //     label: '偏好设置',
+            //     accelerator: 'CmdOrCtrl+,',
+            //     click: function () {
+            //     }
+            // },
             {
                 label: '检查更新…',
                 accelerator: '',
@@ -216,6 +199,7 @@ if (process.platform === 'darwin') {
                 label: '退出',
                 accelerator: 'Command+Q',
                 click: function () {
+                    remote.app.quit();
                 }
             }
         ]
@@ -231,11 +215,10 @@ if (process.platform === 'darwin') {
     });
 
     helpItem.submenu.unshift({
-        label: '关于 WeFlow',
+        label: '关于 fdFlow',
         click: function (item, focusedWindow) {
         }
     });
 }
 
-let menu = Menu.buildFromTemplate(template);
-Menu.setApplicationMenu(menu);
+Menu.setApplicationMenu(Menu.buildFromTemplate(template));

@@ -2,14 +2,15 @@
  * Created by fuhuixiang on 16-8-26.
  */
 "use strict";
-const path = require('path'),
-      fs   = require('fs');
+const path    = require('path'),
+      webpack = require('webpack'),
+      fs      = require('fs');
 
 class Controller {
     constructor() {
         this.name = 'fdFlow';
         this.root = path.join(__dirname, '../');
-        this.exampleName = 'fdFlow-example';
+        this.exampleName = 'fdFlow_example';
         this.workspace = `${this.name}_workspace`;
         this.platform = process.platform;
         this.defaultPath = this.platform === 'win32' ? 'desktop' : 'home';

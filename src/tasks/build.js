@@ -13,29 +13,19 @@ const core           = require('gulp'),
       taskIf         = require('../util/stream_if'),
       controller     = require('../controller');
 
-module.exports = ()=> {
+module.exports = (projectDir)=> {
 
     // 判断参数是否合法
-    if (!!buildDir) {
-        fs.exists(devDir, (exists) => {
-            if (exists) {
-                if (!!buildVer) {
-                    console.log('正在部署的版本:' + buildVer);
-                    outDist(buildDir, buildVer, devDir);
-                } else {
-                    getVersion(buildDir, (result) => {
-                        console.log('正在部署的版本:' + result);
-                        outDist(buildDir, result, devDir);
-                    });
-                }
-            } else {
-                console.log('警告！！！没有您要部署的项目！');
-            }
-        });
-    } else {
-        console.log('请输入需要部署的活动路径!');
-        return null;
-    }
+    fs.exists(projectDir, (exists) => {
+        if (exists) {
+            getVersion(projectDir, (result) => {
+                console.log('正在部署的版本:' + result);
+                outDist(`${projectDir}/fd_dist/`, result, projectDir);
+            });
+        } else {
+            console.log('警告！！！没有您要部署的项目！');
+        }
+    });
 };
 
 /**
@@ -45,16 +35,16 @@ module.exports = ()=> {
  * @param devDir
  */
 function outDist(buildDir, nowVersion, devDir) {
-    let distStaticDir = `${_config.distDir}/${_config.staticDir}/${buildDir}/${nowVersion}`,
-        staticURL     = _config.needCDN ? _config.staticURL : `../${_config.staticDir}`,
-        buildCDNDir   = `${staticURL}/${buildDir}/${nowVersion}`,
-        buildName     = _config.activity ? buildDir.split('/')[1] : buildDir;
+    let buildName     = path.basename(devDir),
+        distStaticDir = `${buildDir}/${constConfig.staticDir}/${nowVersion}`,
+        staticURL     = constConfig.needCDN ? constConfig.staticURL : `../${constConfig.staticDir}`,
+        buildCDNDir   = `${staticURL}/${path.basename(devDir)}/${nowVersion}`;
 
     // 部署并压缩javaScript脚本文件
     core.src(`${devDir}/js/*.js`)
         .pipe(wpStreamPlugin(controller.webpackConfig()))
         .pipe(renamePlugin(`${buildName}.min.js`))
-        .pipe(taskIf(_config.needCDN, replacePlugin('../images/', `${buildCDNDir}/images/`)))
+        .pipe(taskIf(constConfig.needCDN, replacePlugin('../images/', `${buildCDNDir}/images/`)))
         .pipe(replacePlugin({
             '@@androidVer': constConfig.androidVer,
             'images/': `${buildCDNDir}/images/`
@@ -62,12 +52,9 @@ function outDist(buildDir, nowVersion, devDir) {
         .pipe(core.dest(`${distStaticDir}/js/`));
 
     // 部署需要用到的图片，若没有图片则目录不存在
-    core.src(`${devDir}/images/**/*.*`)
-        .pipe(core.dest(`${distStaticDir}/images/`));
-
     // 部署需要用到的字体文件，若没有字体文件则目录不存在
-    core.src(`${devDir}/font/*.*`)
-        .pipe(core.dest(`${distStaticDir}/font/`));
+    core.src([`${devDir}/images/**/*.*`, `${devDir}/font/*.*`])
+        .pipe(core.dest(`${distStaticDir}/images/`));
 
     // 部署并压缩需要用到的样式表文件，并且替换样式表中的本地资源为CDN资源
     core.src(`${devDir}/scss/*.scss`)
@@ -76,7 +63,7 @@ function outDist(buildDir, nowVersion, devDir) {
             includePaths: require('nuts-scss').includePaths,
             outputStyle: 'compressed'
         }))
-        .pipe(taskIf(_config.needCDN, replacePlugin({
+        .pipe(taskIf(constConfig.needCDN, replacePlugin({
             '../images/': `${buildCDNDir}/images/`,
             '../font/': `${buildCDNDir}/font/`
         })))
@@ -89,5 +76,5 @@ function outDist(buildDir, nowVersion, devDir) {
             'src="js/': `src="${buildCDNDir}/js/`,
             'src="images/': `src="${buildCDNDir}/images/`
         }))
-        .pipe(core.dest(`${projectDir}/fd_dist`));
+        .pipe(core.dest(`${devDir}/fd_dist`));
 }

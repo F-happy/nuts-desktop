@@ -183,6 +183,11 @@ footer {
     font-size: 18px;
 }
 
+.dev-running {
+    border-color: #80cb54;
+    color: #80cb54;
+}
+
 .input-open {
     position: relative;
     left: 0;
