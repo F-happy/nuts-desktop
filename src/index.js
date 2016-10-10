@@ -8,6 +8,7 @@ const electron = require('electron');
 const remote = electron.remote;
 const _ = require('lodash');
 const path = require('path');
+const Vue = require('vue');
 const fs = require('fs');
 const controller = require(`${__dirname}/src/controller`);
 

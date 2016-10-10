@@ -2,7 +2,7 @@
  * Created by fuhuixiang on 16-8-26.
  */
 "use strict";
-const Menu = electron.remote.Menu;
+const Menu = require('electron').remote.Menu;
 
 let template = [
     {
@@ -12,7 +12,7 @@ let template = [
                 label: '新建项目',
                 accelerator: 'CmdOrCtrl+N',
                 click: function (item, focusedWindow) {
-                    newProject();
+                    // newProject();
                 }
             },
             {
@@ -81,14 +81,14 @@ let template = [
                 label: '执行 开发流程',
                 accelerator: 'CmdOrCtrl+1',
                 click: function (item, focusedWindow) {
-                    runTask();
+                    // runTask();
                 }
             },
             {
                 label: '执行 生产流程',
                 accelerator: 'CmdOrCtrl+2',
                 click: function (item, focusedWindow) {
-                    distTask();
+                    // distTask();
                 }
             },
         ]
