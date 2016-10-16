@@ -11,16 +11,16 @@
         <article id="app">
             <!--这里是vue的绑定点-->
             <nuts-welcome v-if="shouldShowWelcome"></nuts-welcome>
-            <template v-if="!shouldShowWelcome">
+            <template v-else>
                 <header class="header-title">项目</header>
                 <ul class="project-lists">
                     <li :class="['list', {active: active === index}]" v-for="(value, key, index) in taskList" @click="activeView(index)">
                         <div class="icon-finder iconfont" @click.stop="openProjectFinder"></div>
                         <div class="project-info">
-                            <h3 class="project-name">{{getName(value)}}</h3>
+                            <h3 class="project-name">{{key}}</h3>
                             <p class="project-location" v-if="active === index">{{value.path}}</p>
                         </div>
-                        <div class="list-info-img"></div>
+                        <div :class="['list-info-img', active === index ? 'icon-xinxi iconfont' : '']"></div>
                     </li>
                 </ul>
             </template>

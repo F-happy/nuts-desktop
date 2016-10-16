@@ -32,6 +32,8 @@ if (!controller.getStorage()) {
 }
 
 // 初始化整个页面
+Vue.config.devtools = false;
+
 new Vue({
     el: '#app',
     data: {
@@ -46,9 +48,9 @@ new Vue({
         'nuts-footer': require(`${__dirname}/src/components/footer`)
     },
     methods: {
-        getName: (item)=> {
-            return path.basename(item.path)
-        },
+        // getName: (item)=> {
+        //     return path.basename(item.path)
+        // },
         activeView: function (num) {
             this.active = num;
             console.log(num)
