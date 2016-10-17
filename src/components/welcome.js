@@ -1,4 +1,5 @@
 /**
+ * 欢迎页面
  * Created by fuhuixiang on 16-10-10.
  */
 "use strict";

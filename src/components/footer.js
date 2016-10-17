@@ -1,4 +1,5 @@
 /**
+ * 底部各项按钮开关的组件
  * Created by fuhuixiang on 16-10-10.
  */
 "use strict";
@@ -18,7 +19,7 @@ module.exports = Vue.extend({
                             <span class="tool-find iconfont icon-wenjianjia">
                                 <input class="input-open" id="jsOpenProject" type="file" webkitdirectory multiple>
                             </span>
-                            <span class="tool-setting iconfont icon-shezhi"></span>
+                            <span class="tool-setting iconfont icon-shezhi" @click="openSetting"></span>
                         </div>
                         <div class="tool-state">
                             <span class="state-text"><!--Done--></span>
@@ -36,6 +37,8 @@ module.exports = Vue.extend({
         this.bottomView = !_.isEmpty(this.projects);
     },
     methods: {
-
+        openSetting: function () {
+            this.$parent.showSettingView = true;
+        }
     }
 });

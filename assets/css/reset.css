@@ -2,12 +2,13 @@
 *, *:before, *:after {
     box-sizing: border-box;
 }
+
 html {
     -webkit-text-size-adjust: none;
     -webkit-appearance: none;
     line-height: 1;
     /*font-family: "Helvetica Neue", Helvetica, STHeiTi, sans-serif;*/
-    font-family:  -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
     -webkit-user-select: none;
 }
 
@@ -15,7 +16,6 @@ html, body, div, p, header, button, ul, li, h3 {
     margin: 0;
     padding: 0;
     border: 0;
-    font: inherit;
     font-size: 100%;
     vertical-align: baseline;
 }
@@ -37,10 +37,11 @@ button {
     cursor: pointer;
 }
 
-button:focus {
+button:focus, input:focus {
     outline: none;
 }
 
-/*.hide {*/
-    /*display: none !important;*/
-/*}*/
+li {
+    list-style: none;
+    padding: 0;
+}

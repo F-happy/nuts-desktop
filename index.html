@@ -15,87 +15,18 @@
                 <header class="header-title">项目</header>
                 <ul class="project-lists">
                     <li :class="['list', {active: active === index}]" v-for="(value, key, index) in taskList" @click="activeView(index)">
-                        <div class="icon-finder iconfont" @click.stop="openProjectFinder"></div>
+                        <div class="icon-finder iconfont" @click.stop="openProjectFinder(value)"></div>
                         <div class="project-info">
                             <h3 class="project-name">{{key}}</h3>
                             <p class="project-location" v-if="active === index">{{value.path}}</p>
                         </div>
-                        <div :class="['list-info-img', active === index ? 'icon-xinxi iconfont' : '']"></div>
+                        <div :class="['list-info-img', active === index ? 'icon-xinxi iconfont' : '']" @click="openSetting(key)"></div>
                     </li>
                 </ul>
             </template>
             <nuts-footer :running="running" :projects="taskList"></nuts-footer>
+            <nuts-setting v-if="showSettingView"></nuts-setting>
         </article>
-        <!--<article class="welcome">-->
-            <!--<img src="assets/img/fd.png" class="welcome-img"/>-->
-            <!--<h2 class="welcome-title">fdFlow</h2>-->
-            <!--<h4 class="welcome-text">没伞的孩子要努力跑......</h4>-->
-            <!--<button class="welcome-example">导入示例项目</button>-->
-        <!--</article>-->
-        <!--<header class="header-title hide">项目</header>-->
-        <!--<ul class="project-lists hide"></ul>-->
-        <!--<footer>-->
-            <!--<section class="btn-box hide">-->
-                <!--<button class="dev-btn">开发</button>-->
-                <!--<button class="build-btn">生产编译</button>-->
-            <!--</section>-->
-            <!--<section class="tools">-->
-                <!--<div class="tool-btn">-->
-                    <!--<span class="tool-add iconfont icon-jia"></span>-->
-                    <!--<span class="tool-del iconfont icon-jian"></span>-->
-                    <!--<span class="tool-find iconfont icon-wenjianjia">-->
-                        <!--<input class="input-open" id="jsOpenProject" type="file" webkitdirectory multiple>-->
-                    <!--</span>-->
-                    <!--<span class="tool-setting iconfont icon-shezhi"></span>-->
-                <!--</div>-->
-                <!--<div class="tool-state">-->
-                    <!--<span class="state-text">-->
-                        <!--&lt;!&ndash;Done&ndash;&gt;-->
-                    <!--</span>-->
-                    <!--<span class="state-running iconfont icon-yunxing"></span>-->
-                <!--</div>-->
-            <!--</section>-->
-        <!--</footer>-->
-
-        <!--<article class="setting-view hide">-->
-            <!--<header class="setting-btn-top">-->
-                <!--<i class="iconfont icon-bangzhu"></i>-->
-                <!--<i class="iconfont icon-guanbi"></i>-->
-            <!--</header>-->
-            <!--<h2 class="setting-title">工作区路径</h2>-->
-            <!--<input type="text" class="setting-workspace" id="settingWorkspace" title="工作区路径"/>-->
-            <!--<h2 class="setting-title">功能</h2>-->
-            <!--<ul class="setting-list">-->
-                <!--<li>-->
-                    <!--<span class="iconfont icon-xuanze"></span>-->
-                    <!--<span class="list-text">是否是活动项目</span>-->
-                <!--</li>-->
-                <!--<li>-->
-                    <!--<span class="iconfont icon-xuanze"></span>-->
-                    <!--<span class="list-text">编译时是否需要添加 cdn</span>-->
-                <!--</li>-->
-            <!--</ul>-->
-            <!--<h2 class="setting-title">默认设置</h2>-->
-            <!--<ul class="setting-list">-->
-                <!--<li>-->
-                    <!--<input type="text" class="setting-input" title="项目作者">-->
-                    <!--<span class="label">项目作者</span>-->
-                <!--</li>-->
-                <!--<li>-->
-                    <!--<input type="text" class="setting-input" title="默认的CDN路径">-->
-                    <!--<span class="label">默认的CDN路径</span>-->
-                <!--</li>-->
-                <!--<li>-->
-                    <!--<input type="text" class="setting-input" title="最新的安卓版本号">-->
-                    <!--<span class="label">最新的安卓版本号,代码中的占位符为 @@androidVer</span>-->
-                <!--</li>-->
-                <!--<li>-->
-                    <!--<input type="text" class="setting-input" title="sass 库">-->
-                    <!--<span class="label">引入的 sass 库,默认采用了 nuts-scss 库,使用时需要先安装。传入的值需要是一个数组。</span>-->
-                <!--</li>-->
-            <!--</ul>-->
-        <!--</article>-->
-        <!--<script src="./src/index.js"></script>-->
         <script src="./src/mainView.js"></script>
         <script src="./src/menu.js"></script>
     </body>

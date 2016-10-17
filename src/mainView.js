@@ -3,13 +3,15 @@
  */
 "use strict";
 
-const remote = require('electron').remote;
+const electron = require('electron');
+const remote = electron.remote;
 const _ = require('lodash');
 const path = require('path');
 const Vue = require('vue');
 const fs = require('fs');
 
 const controller = require(`${__dirname}/src/controller`);
+const store = require(`${__dirname}/src/store`);
 
 let workspace = path.join(remote.app.getPath(controller.defaultPath), controller.workspace);
 
@@ -40,23 +42,27 @@ new Vue({
         shouldShowWelcome: true,
         active: 0,
         taskList: {},
-        running: false
+        running: false,
+        showSettingView: false,
     },
     components: {
         // <nuts-component> 只能用在父组件模板内
         'nuts-welcome': require(`${__dirname}/src/components/welcome`),
-        'nuts-footer': require(`${__dirname}/src/components/footer`)
+        'nuts-footer': require(`${__dirname}/src/components/footer`),
+        'nuts-setting': require(`${__dirname}/src/components/setting`)
     },
     methods: {
-        // getName: (item)=> {
-        //     return path.basename(item.path)
-        // },
         activeView: function (num) {
             this.active = num;
-            console.log(num)
+            console.log(num);
         },
-        openProjectFinder: function () {
-            console.log('finder');
+        openProjectFinder: function (value) {
+            // 打开本地文件夹 https://github.com/electron/electron/blob/master/docs-translations/zh-CN/api/shell.md
+            electron.shell.showItemInFolder(value.path);
+        },
+        openSetting: function (name) {
+            store.settingProjectName = name;
+            this.showSettingView = true;
         }
     },
     created: function () {

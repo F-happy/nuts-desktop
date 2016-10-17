@@ -25,7 +25,11 @@ function createWindow() {
         minHeight: 572,
         resizable: false,
         title: 'fdFlow',
-        icon: logo
+        icon: logo,
+        maximizable: false,
+        fullscreen: false, // 全屏化按钮不可用
+        autoHideMenuBar: false, // 除非点击 Alt，否则隐藏菜单栏
+        // titleBarStyle: 'hidden',
     });
 
     // 并且装载应用的index.html页面
