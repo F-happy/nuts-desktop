@@ -304,6 +304,10 @@ footer {
     margin-top: 10px;
 }
 
+.setting-active {
+    color: #33b3ed;
+}
+
 .add-project-input {
     height: 20px;
     line-height: 20px;

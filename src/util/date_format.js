@@ -5,10 +5,8 @@
 'use strict';
 
 module.exports = () => {
-    let date = new Date();
-    return date.getFullYear() +
-        "-" + (date.getMonth() < 10 ? '0' +
-        (date.getMonth() + 1) : (date.getMonth() + 1)) +
-        "-" + (date.getDate() < 10 ? '0' +
-        date.getDate() : date.getDate());
+    let date  = new Date(),
+        month = date.getMonth() + 1,
+        day   = date.getDate() + 1;
+    return `${date.getFullYear()}-${month < 10 ? `0${month}` : month}-${day < 10 ? `0${day}` : day}`;
 };

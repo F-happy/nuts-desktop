@@ -14,7 +14,7 @@
             <template v-else>
                 <header class="header-title">项目</header>
                 <ul class="project-lists">
-                    <li :class="['list', {active: active === index}]" v-for="(value, key, index) in taskList" @click="activeView(index)">
+                    <li :class="['list', {active: active === index}]" v-for="(value, key, index) in taskList" @click.stop="activeView(index)">
                         <div class="icon-finder iconfont" @click.stop="openProjectFinder(value)"></div>
                         <div class="project-info">
                             <h3 class="project-name">{{key}}</h3>

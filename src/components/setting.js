@@ -19,11 +19,11 @@ module.exports = Vue.extend({
             <h2 class="setting-title">功能</h2>
             <ul class="setting-list">
                 <li>
-                    <span class="iconfont icon-xuanze" @click="hasCDNHandle"></span>
+                    <span :class="['iconfont', 'icon-xuanze', needCDN ? 'setting-active':'']" @click="handleChange('cdn')"></span>
                     <span class="list-text">编译时是否需要添加 CDN</span>
                 </li>
                 <li>
-                    <span class="iconfont icon-xuanze" @click="hasCDNHandle"></span>
+                    <span :class="['iconfont', 'icon-xuanze', openLiveReload ? 'setting-active':'']" @click="handleChange('live')"></span>
                     <span class="list-text">开启 LiveReload 开发模式自动刷新</span>
                 </li>
             </ul>
@@ -62,14 +62,25 @@ module.exports = Vue.extend({
             defaultCDNPath: 'http://cdn.jonnyf.com/image',
             defaultReplaceStr: 666,
             defaultSassLib: 'nuts-scss',
+            openLiveReload: true,
+            needCDN: false,
         }
     },
     created: function () {
         // debugger
     },
     methods: {
-        hasCDNHandle: function () {
-            console.log('cdn');
+        handleChange: function (type) {
+            switch (type){
+                case 'cdn':
+                    this.needCDN = !this.needCDN;
+                    break;
+                case 'live':
+                    this.openLiveReload = !this.openLiveReload;
+                    break;
+                default:
+                    break;
+            }
         },
         handleClose: function () {
             this.$parent.showSettingView = false;

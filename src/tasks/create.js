@@ -9,50 +9,62 @@ const fs            = require("fs"),
       core          = require('gulp'),
       renamePlugin  = require('gulp-rename'),
       replacePlugin = require('gulp-replace-pro'),
-      time          = require('../util/date_format');
+      mkdirs        = require('../util/mkdirs'),
+      timeFormat    = require('../util/date_format');
 
 module.exports = (projectName)=> {
     let projectDir = path.join(workspace, projectName);
     fs.exists(projectDir, (msg)=> {
         if (msg) {
-            console.log(msg);
+            console.log('警告！！！您要创建的项目已经存在！');
+            return null;
         } else {
-            createProject(projectDir, projectName);
+            let create = createProject(projectDir, projectName);
+            create.next();
+            console.log('HTML文件创建完成！！！');
+            create.next();
+            console.log('样式文件创建完成！！！');
+            create.next();
+            console.log('脚本文件创建完成！！！');
+            if (create.next().done) {
+                console.log(`${projectName}项目创建完成！！！`);
+            }
         }
     });
 };
 
-function createProject(projectDir, projectName) {
-    let letter_name = projectName.replace(/\_(\w)/g, (all, letter)=> {
+function* createProject(devDir, name) {
+
+    let letterName = name.replace(/\_(\w)/g, (all, letter)=> {
         return letter.toUpperCase();
     });
 
-    let templatesPath = path.join(__dirname, '../../templates/');
-    core.src(`${templatesPath}/index.html`)
-        .pipe(replacePlugin('@@main', projectName))
-        .pipe(core.dest(`${projectDir}/`));
-
-    core.src(`${templatesPath}/scss/main.scss`)
-        .pipe(renamePlugin(`${projectName}.scss`))
-        .pipe(core.dest(`${projectDir}/scss`));
-
-    core.src(`${templatesPath}/js/main.tmpl`)
+    let templetPath = path.join(__dirname, '../../templates/');
+    yield core.src(`${templetPath}/index.html`)
         .pipe(replacePlugin({
-            '@@project_name': projectName,
-            '@@author': constConfig.author,
-            '@@date': time,
-            '@@project': letter_name.replace(/(\w)/, v=> v.toUpperCase()),
-            '@@letter': letter_name
+            '@@main': name,
+            '@@title': config.title
         }))
-        .pipe(renamePlugin(`${projectName}.js`))
-        .pipe(core.dest(`${projectDir}/js`));
+        .pipe(core.dest(`${devDir}/`));
+
+    yield core.src(`${templetPath}/scss/main.scss`)
+        .pipe(renamePlugin(`${name}.scss`))
+        .pipe(core.dest(`${devDir}/scss`));
+
+    yield core.src(`${templetPath}/js/main.tmpl`)
+        .pipe(replacePlugin({
+            '@@project_name': name,
+            '@@author': config.author,
+            '@@date': timeFormat,
+            '@@project': letterName.replace(/(\w)/, v=> v.toUpperCase()),
+            '@@letter': letterName
+        }))
+        .pipe(renamePlugin(`${name}.js`))
+        .pipe(core.dest(`${devDir}/js`));
 
     // 创建图片和字体文件夹
-    fs.mkdir(projectDir, (err) => {
-        if (err) {
-            console.log(err);
-        }
-        fs.mkdirSync(`${projectDir}/images`);
-        fs.mkdirSync(`${projectDir}/font`);
+    return mkdirs(path.resolve(process.cwd(), devDir), (dir)=> {
+        fs.mkdirSync(`${dir}/images`);
+        fs.mkdirSync(`${dir}/font`);
     });
 }

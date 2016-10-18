@@ -13,6 +13,13 @@ const fs = require('fs');
 const controller = require(`${__dirname}/src/controller`);
 const store = require(`${__dirname}/src/store`);
 
+// 开始导入命令脚本
+const createTask = require(`${__dirname}/src/tasks/create`),
+      delTask    = require(`${__dirname}/src/tasks/clean`),
+      devTask    = require(`${__dirname}/src/tasks/dev`),
+      serverTask = require(`${__dirname}/src/tasks/server`),
+      buildTask  = require(`${__dirname}/src/tasks/build`);
+
 let workspace = path.join(remote.app.getPath(controller.defaultPath), controller.workspace);
 
 // 初始化软件
@@ -66,7 +73,8 @@ new Vue({
         }
     },
     created: function () {
-        this.shouldShowWelcome = false;
         this.taskList = controller.getStorage().projects;
+        // debugger
+        this.shouldShowWelcome = !this.taskList;
     }
 });
