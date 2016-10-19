@@ -3,7 +3,14 @@
  */
 "use strict";
 const path = require('path');
-const controller = require(`${__dirname}/src/controller`);
+const controller = require(`${__dirname}/controller`);
+
+// 开始导入命令脚本
+const createTask = require(`${__dirname}/tasks/create`),
+      delTask    = require(`${__dirname}/tasks/clean`),
+      devTask    = require(`${__dirname}/tasks/dev`),
+      serverTask = require(`${__dirname}/tasks/server`),
+      buildTask  = require(`${__dirname}/tasks/build`);
 
 module.exports.store = {
     settingProjectName: 'global'
@@ -27,9 +34,27 @@ module.exports.openProject = (projectPath, callback)=> {
 
             //插入打开的项目
             // insertOpenProject({projectPath: {path: projectPath}});
-            callback(projectName);
+            callback({storage, projectName});
         }
     }
+};
+
+module.exports.createTask = (projectName)=> {
+    createTask(projectName);
+};
+
+module.exports.deleteProject = (delProjectPath, callback)=> {
+    delTask(delProjectPath, (projectDir)=> {
+        let storage = controller.getStorage();
+        let storageProject = storage.projects;
+        for (let i in storageProject) {
+            if (i === path.basename(projectDir)) {
+                delete storage.projects[i];
+            }
+        }
+        controller.setStorage(storage);
+        callback(storage);
+    });
 };
 
 // fdFlow = {

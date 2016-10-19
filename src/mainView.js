@@ -5,20 +5,13 @@
 
 const electron = require('electron');
 const remote = electron.remote;
-const _ = require('lodash');
 const path = require('path');
 const Vue = require('vue');
 const fs = require('fs');
 
 const controller = require(`${__dirname}/src/controller`);
+const isEmpty = require(`${__dirname}/src/util/isEmptyObject`);
 const store = require(`${__dirname}/src/store`);
-
-// 开始导入命令脚本
-const createTask = require(`${__dirname}/src/tasks/create`),
-      delTask    = require(`${__dirname}/src/tasks/clean`),
-      devTask    = require(`${__dirname}/src/tasks/dev`),
-      serverTask = require(`${__dirname}/src/tasks/server`),
-      buildTask  = require(`${__dirname}/src/tasks/build`);
 
 let workspace = path.join(remote.app.getPath(controller.defaultPath), controller.workspace);
 
@@ -48,6 +41,7 @@ new Vue({
     data: {
         shouldShowWelcome: true,
         active: 0,
+        activeName: '',
         taskList: {},
         running: false,
         showSettingView: false,
@@ -59,8 +53,9 @@ new Vue({
         'nuts-setting': require(`${__dirname}/src/components/setting`)
     },
     methods: {
-        activeView: function (num) {
+        activeView: function (num, name) {
             this.active = num;
+            this.activeName = name;
             console.log(num);
         },
         openProjectFinder: function (value) {
@@ -74,7 +69,8 @@ new Vue({
     },
     created: function () {
         this.taskList = controller.getStorage().projects;
+        this.activeName = Object.keys(this.taskList)[0];
         // debugger
-        this.shouldShowWelcome = !this.taskList;
+        this.shouldShowWelcome = isEmpty(this.taskList);
     }
 });

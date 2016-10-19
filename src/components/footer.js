@@ -4,7 +4,8 @@
  */
 "use strict";
 const Vue = require('vue');
-const _ = require('lodash');
+const store = require(`../store`);
+const isEmpty = require(`../util/isEmptyObject`);
 
 module.exports = Vue.extend({
     template: `<footer>
@@ -15,7 +16,7 @@ module.exports = Vue.extend({
                     <section class="tools">
                         <div class="tool-btn">
                             <span class="tool-add iconfont icon-jia"></span>
-                            <span class="tool-del iconfont icon-jian"></span>
+                            <span class="tool-del iconfont icon-jian" @click="deleteProject"></span>
                             <span class="tool-find iconfont icon-wenjianjia">
                                 <input class="input-open" id="jsOpenProject" type="file" webkitdirectory multiple>
                             </span>
@@ -34,11 +35,20 @@ module.exports = Vue.extend({
         }
     },
     created: function () {
-        this.bottomView = !_.isEmpty(this.projects);
+        // debugger
+        this.bottomView = !isEmpty(this.projects);
     },
     methods: {
         openSetting: function () {
             this.$parent.showSettingView = true;
+        },
+        deleteProject: function () {
+            // debugger
+            let deleteName = this.$parent.$data.activeName;
+            let deletePath = this.$parent.$data.taskList[deleteName]['path'];
+            store.deleteProject(deletePath, (storage)=>{
+                debugger
+            });
         }
     }
 });

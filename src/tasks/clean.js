@@ -7,7 +7,7 @@ const fs = require('fs');
 
 module.exports = (projectDir, callback)=> {
     deleteFolderRecursive(projectDir);
-    callback();
+    callback(projectDir);
 };
 
 function deleteFolderRecursive(path) {

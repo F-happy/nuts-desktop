@@ -3,7 +3,10 @@
  * Created by fuhuixiang on 16-10-10.
  */
 "use strict";
+const path = require('path');
 const Vue = require('vue');
+const store = require(`../store`);
+const controller = require('../controller');
 
 module.exports = Vue.extend({
     template: `<article class="welcome">
@@ -15,11 +18,15 @@ module.exports = Vue.extend({
     methods: {
         addExample: ()=> {
             console.log('say');
-            // let workspace = path.join(remote.app.getPath(controller.defaultPath), controller.workspace);
-            // openProject(path.join(workspace, 'welcome_example'), (projectName)=> {
-            //     // createTask(projectName);
-            //     console.log(projectName);
-            // });
+            let workspace = path.join(remote.app.getPath(controller.defaultPath), controller.workspace);
+            store.openProject(path.join(workspace, 'welcome_example'), (projects)=> {
+                debugger
+                let {storage, projectName} = projects;
+                // createTask(projectName);
+                store.createTask(projectName);
+                this.$parent.$data.taskList = storage.projects;
+                console.log(projectName);
+            });
         }
     }
 });
