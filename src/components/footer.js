@@ -44,10 +44,9 @@ module.exports = Vue.extend({
         },
         deleteProject: function () {
             // debugger
-            let deleteName = this.$parent.$data.activeName;
-            let deletePath = this.$parent.$data.taskList[deleteName]['path'];
+            let deletePath = store.taskList[store.activeProjectName]['path'];
             store.deleteProject(deletePath, (storage)=>{
-                debugger
+                this.$parent.initView(storage.projects);
             });
         }
     }

@@ -10,16 +10,17 @@ const fs            = require("fs"),
       renamePlugin  = require('gulp-rename'),
       replacePlugin = require('gulp-replace-pro'),
       mkdirs        = require('../util/mkdirs'),
+      config        = require('../../fdflow.config.json'),
       timeFormat    = require('../util/date_format');
 
-module.exports = (projectName)=> {
-    let projectDir = path.join(workspace, projectName);
+module.exports = (projectDir)=> {
+    // let projectDir = path.join(workspace, projectName);
     fs.exists(projectDir, (msg)=> {
         if (msg) {
             console.log('警告！！！您要创建的项目已经存在！');
             return null;
         } else {
-            let create = createProject(projectDir, projectName);
+            let create = createProject(projectDir, path.basename(projectDir));
             create.next();
             console.log('HTML文件创建完成！！！');
             create.next();
@@ -27,7 +28,7 @@ module.exports = (projectName)=> {
             create.next();
             console.log('脚本文件创建完成！！！');
             if (create.next().done) {
-                console.log(`${projectName}项目创建完成！！！`);
+                console.log(`${path.basename(projectDir)}项目创建完成！！！`);
             }
         }
     });

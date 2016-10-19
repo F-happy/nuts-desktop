@@ -13,7 +13,9 @@ const createTask = require(`${__dirname}/tasks/create`),
       buildTask  = require(`${__dirname}/tasks/build`);
 
 module.exports.store = {
-    settingProjectName: 'global'
+    settingProjectName: 'global',
+    activeProjectName: '',
+    taskList: {}
 };
 
 module.exports.openProject = (projectPath, callback)=> {
@@ -34,7 +36,7 @@ module.exports.openProject = (projectPath, callback)=> {
 
             //插入打开的项目
             // insertOpenProject({projectPath: {path: projectPath}});
-            callback({storage, projectName});
+            callback({storage, projectPath});
         }
     }
 };
@@ -57,6 +59,7 @@ module.exports.deleteProject = (delProjectPath, callback)=> {
     });
 };
 
+// 本地保存的数据结构
 // fdFlow = {
 //     "workspace": "/Users/fuhuixiang/fdFlow_workspace", "projects": {
 //         "welcome_example": {

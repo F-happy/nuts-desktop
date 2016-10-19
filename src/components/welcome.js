@@ -16,16 +16,12 @@ module.exports = Vue.extend({
                     <button class="welcome-example" @click="addExample">导入示例项目</button>
                </article>`,
     methods: {
-        addExample: ()=> {
-            console.log('say');
+        addExample: function() {
             let workspace = path.join(remote.app.getPath(controller.defaultPath), controller.workspace);
             store.openProject(path.join(workspace, 'welcome_example'), (projects)=> {
-                debugger
-                let {storage, projectName} = projects;
-                // createTask(projectName);
-                store.createTask(projectName);
-                this.$parent.$data.taskList = storage.projects;
-                console.log(projectName);
+                let {storage, projectPath} = projects;
+                store.createTask(projectPath);
+                this.$parent.initView(storage.projects);
             });
         }
     }

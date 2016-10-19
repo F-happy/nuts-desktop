@@ -41,7 +41,6 @@ new Vue({
     data: {
         shouldShowWelcome: true,
         active: 0,
-        activeName: '',
         taskList: {},
         running: false,
         showSettingView: false,
@@ -55,8 +54,7 @@ new Vue({
     methods: {
         activeView: function (num, name) {
             this.active = num;
-            this.activeName = name;
-            console.log(num);
+            store.activeProjectName = name;
         },
         openProjectFinder: function (value) {
             // 打开本地文件夹 https://github.com/electron/electron/blob/master/docs-translations/zh-CN/api/shell.md
@@ -65,12 +63,15 @@ new Vue({
         openSetting: function (name) {
             store.settingProjectName = name;
             this.showSettingView = true;
+        },
+        initView: function (newStorage) {
+            this.taskList = store.taskList = newStorage;
+            this.shouldShowWelcome = isEmpty(newStorage);
         }
     },
     created: function () {
-        this.taskList = controller.getStorage().projects;
-        this.activeName = Object.keys(this.taskList)[0];
-        // debugger
+        this.taskList = store.taskList = controller.getStorage().projects;
+        store.activeProjectName = Object.keys(this.taskList)[0];
         this.shouldShowWelcome = isEmpty(this.taskList);
     }
 });

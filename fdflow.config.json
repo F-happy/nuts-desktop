@@ -4,5 +4,13 @@
     "activity": false,
     "needCDN": false,
     "staticURL": "http://cdn.jonnyf.com",
-    "staticDir": "static"
+    "staticDir": "static",
+    "serverPort": 2333,
+    "sourceDir": "src",
+    "distDir": "dist",
+    "name": "example",
+    "title": "exampleTitle",
+    "devDir": "dev",
+    "replaceStr": 120,
+    "sassLib": ["nuts-scss"]
 }
