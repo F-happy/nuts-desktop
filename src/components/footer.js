@@ -5,13 +5,13 @@
 "use strict";
 const Vue = require('vue');
 const store = require(`../store`);
-const isEmpty = require(`../util/isEmptyObject`);
+const isEmpty = require(`../util/is_empty_object`);
 
 module.exports = Vue.extend({
     template: `<footer>
                     <section class="btn-box" v-if="bottomView">
-                        <button class="dev-btn">开发</button>
-                        <button class="build-btn">生产编译</button>
+                        <button class="dev-btn" @click="beginDev">开发</button>
+                        <button class="build-btn" @click="beginBuild">生产编译</button>
                     </section>
                     <section class="tools">
                         <div class="tool-btn">
@@ -45,10 +45,24 @@ module.exports = Vue.extend({
             this.$parent.createProject();
         },
         deleteProject: function () {
-            let deletePath = store.taskList[store.activeProjectName]['path'];
-            store.deleteProject(deletePath, (storage)=> {
+            store.deleteProject(store.taskList[store.activeProjectName]['path'], (storage)=> {
                 this.$parent.initView(storage.projects);
             });
+        },
+        beginDev: function () {
+            let {taskList, activeProjectName} = store;
+            let workspace = taskList[activeProjectName].path, config = {};
+            try {
+                config = require(`${workspace}/fdflow.config.json`);
+            } catch (e) {
+                alert('该项目下缺失配置文件！！！');
+                return null;
+            }
+            config.serverPort += Object.keys(taskList).indexOf(activeProjectName);
+            store.startServer(workspace, config.serverPort, config);
+        },
+        beginBuild: function () {
+
         }
     }
 });

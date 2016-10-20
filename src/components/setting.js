@@ -14,7 +14,7 @@ module.exports = Vue.extend({
             </header>
             <h2 class="setting-title">工作区路径</h2>
             <div class="setting-workspace">
-                <input type="text" id="settingWorkspace" title="工作区路径" :value="defaultWorkSpace"/>
+                <input type="text" title="工作区路径" :value="defaultWorkSpace" disabled="disabledWorkSpace"/>
             </div>
             <h2 class="setting-title">功能</h2>
             <ul class="setting-list">
@@ -55,23 +55,33 @@ module.exports = Vue.extend({
                 </li>
             </ul>
         </article>`,
-    data: ()=> {
-        return {
-            defaultWorkSpace: '/Users/fuhuixiang/fdFlow_workspace/welcome_example',
-            defaultAuthor: 'jonnyf',
-            defaultCDNPath: 'http://cdn.jonnyf.com/image',
-            defaultReplaceStr: 666,
-            defaultSassLib: 'nuts-scss',
-            openLiveReload: true,
-            needCDN: false,
+    data: function () {
+        let settingPath = store.settingProjectPath,
+            config      = {};
+        try {
+            if (settingPath === 'global') {
+                config = require(`${process.cwd()}/fdflow.config.json`);
+            } else {
+                config = require(`${settingPath}/fdflow.config.json`);
+            }
+        } catch (e) {
+            alert('配置文件不存在！！!');
+            this.$parent.showSettingView = false;
         }
-    },
-    created: function () {
-        // debugger
+        return {
+            disabledWorkSpace: settingPath === 'global',
+            defaultWorkSpace: settingPath === 'global' ? '全局配置文件' : settingPath,
+            defaultAuthor: config.author || '',
+            defaultCDNPath: config.staticURL || '',
+            defaultReplaceStr: config.replaceStr || '',
+            defaultSassLib: (config.sassLib || []).join(','),
+            openLiveReload: true,
+            needCDN: config.needCDN || false,
+        }
     },
     methods: {
         handleChange: function (type) {
-            switch (type){
+            switch (type) {
                 case 'cdn':
                     this.needCDN = !this.needCDN;
                     break;
@@ -85,13 +95,5 @@ module.exports = Vue.extend({
         handleClose: function () {
             this.$parent.showSettingView = false;
         }
-        // inputName: function () {
-        //     dialog.showMessageBox({
-        //         type: 'info',
-        //         title: '提示',
-        //         message: "请输入项目名",
-        //         buttons: ['确定']
-        //     });
-        // }
     }
 });

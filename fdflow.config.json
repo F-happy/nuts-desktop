@@ -1,7 +1,5 @@
 {
     "author": "fdFlow",
-    "androidVer": 120,
-    "activity": false,
     "needCDN": false,
     "staticURL": "http://cdn.jonnyf.com",
     "staticDir": "static",
@@ -10,7 +8,6 @@
     "distDir": "dist",
     "name": "example",
     "title": "exampleTitle",
-    "devDir": "dev",
-    "replaceStr": 120,
+    "replaceStr": 666,
     "sassLib": ["nuts-scss"]
 }

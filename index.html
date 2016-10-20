@@ -31,7 +31,7 @@
                             <h3 class="project-name">{{key}}</h3>
                             <p class="project-location" v-if="active === index">{{value.path}}</p>
                         </div>
-                        <div :class="['list-info-img', active === index ? 'icon-xinxi iconfont' : '']" @click="openSetting(key)"></div>
+                        <div :class="['list-info-img', active === index ? 'icon-xinxi iconfont' : '']" @click="openSetting(value)"></div>
                     </li>
                 </ul>
             </template>

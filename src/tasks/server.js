@@ -10,32 +10,26 @@ class Server {
         this.connectCache = {};
     }
 
-    serverStart(proName, port) {
-        if (port) {
-            this.connectCache[port] = connectPlugin.server({
-                root: `${workspace}/${proName}/fd_dev/`,
-                port: port,
-                host: selfIP(),
-                livereload: true
-            });
-            return {ip: selfIP()};
-        } else {
-            console.log('端口被占用');
-            return false;
-        }
+    serverStart(workspace, port, livereload = true) {
+        this.connectCache[port] = connectPlugin.server({
+            root: `${workspace}/fd_dev/`,
+            port: port,
+            host: selfIP(),
+            livereload: livereload
+        });
     }
 
     serverStop(ip, port) {
         try {
             // connectPlugin.server({port: port, host: ip});
             connectPlugin.serverClose();
-        } catch (e){
+        } catch (e) {
             console.log(e);
         }
         return null;
     }
 
-    getConnectCache(){
+    getConnectCache() {
         console.log(this.connectCache);
     }
 }

@@ -41,20 +41,37 @@ class Controller {
         }
     }
 
-    webpackConfig(type) {
+    webpackConfig(devType) {
+        let _preset = null;
+        // 判断当前环境来加载对应的插件
+        try {
+            _preset = require.resolve('../../babel-preset-es2015');
+        } catch (err) {
+            _preset = require.resolve('../node_modules/babel-preset-es2015')
+        }
         return {
             watch: false,
             module: {
                 loaders: [
                     {
-                        test: /\.js$/, loader: 'babel-loader', exclude: '/node_modules/',
+                        test: /\.js$/,
+                        loader: require.resolve('babel-loader'),
+                        exclude: require('path').resolve(__dirname, '../node_modules/'),
                         query: {
-                            //presets: [`${__dirname}/es2015`]  //暂时放弃es6的编译,因为 electron 暂时不支持。
+                            presets: [_preset]
                         }
                     }
                 ]
             },
-            plugins: (type == 'dev') ? [] : [new webpack.optimize.UglifyJsPlugin()]
+            plugins: (devType == 'dev') ? [] : [new webpack.optimize.UglifyJsPlugin({
+                compress: {
+                    warnings: false
+                }
+            }), new webpack.DefinePlugin({
+                'process.env': {
+                    NODE_ENV: '"production"'
+                }
+            }),]
         }
     }
 }

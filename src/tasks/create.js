@@ -14,13 +14,14 @@ const fs            = require("fs"),
       timeFormat    = require('../util/date_format');
 
 module.exports = (projectDir)=> {
-    // let projectDir = path.join(workspace, projectName);
     fs.exists(projectDir, (msg)=> {
         if (msg) {
             console.log('警告！！！您要创建的项目已经存在！');
             return null;
         } else {
             let create = createProject(projectDir, path.basename(projectDir));
+            create.next();
+            console.log('配置文件创建完成！！！');
             create.next();
             console.log('HTML文件创建完成！！！');
             create.next();
@@ -41,6 +42,9 @@ function* createProject(devDir, name) {
     });
 
     let templetPath = path.join(__dirname, '../../templates/');
+    yield core.src(`${path.join(__dirname, '../../')}fdflow.config.json`)
+        .pipe(core.dest(`${devDir}/`));
+
     yield core.src(`${templetPath}/index.html`)
         .pipe(replacePlugin({
             '@@main': name,

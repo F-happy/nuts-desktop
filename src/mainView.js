@@ -10,7 +10,7 @@ const Vue = require('vue');
 const fs = require('fs');
 
 const controller = require(`${__dirname}/src/controller`);
-const isEmpty = require(`${__dirname}/src/util/isEmptyObject`);
+const isEmpty = require(`${__dirname}/src/util/is_empty_object`);
 const store = require(`${__dirname}/src/store`);
 
 let workspace = path.join(remote.app.getPath(controller.defaultPath), controller.workspace);
@@ -61,38 +61,46 @@ new Vue({
             // 打开本地文件夹 https://github.com/electron/electron/blob/master/docs-translations/zh-CN/api/shell.md
             electron.shell.showItemInFolder(value.path);
         },
-        openSetting: function (name) {
-            store.settingProjectName = name;
+        openSetting: function (value) {
+            if (!!value['path']) {
+                store.settingProjectPath = value['path'];
+            }
             this.showSettingView = true;
         },
         initView: function (newStorage) {
+            store.activeProjectName = Object.keys(newStorage).pop();
             this.taskList = store.taskList = newStorage;
             this.shouldShowWelcome = isEmpty(newStorage);
+            this.active--;
         },
         createProject: function () {
             this.addNewProject = true;
             this.active = -1;
+            store.newProjectLock = true;
         },
         handleFocus: function (e) {
-            let inputStr = e.target.value;
-            if (inputStr) {
-                let workspace = path.join(remote.app.getPath(controller.defaultPath), controller.workspace);
-                store.insertProject(path.join(workspace, inputStr), (projects)=> {
-                    let {storage, projectPath} = projects;
-                    store.createTask(projectPath);
-                    this.initView(storage.projects);
-                });
-            } else {
-                remote.dialog.showMessageBox({
-                    type: 'warning',
-                    title: 'fdFlow',
-                    message: '警告!',
-                    detail: '项目名字不能为空!!!',
-                    buttons: ['确定']
-                });
+            if (store.newProjectLock) {
+                store.newProjectLock = false;
+                let inputStr = e.target.value;
+                if (inputStr) {
+                    let workspace = path.join(remote.app.getPath(controller.defaultPath), controller.workspace);
+                    store.insertProject(path.join(workspace, inputStr), (projects)=> {
+                        let {storage, projectPath} = projects;
+                        store.createTask(projectPath);
+                        this.initView(storage.projects);
+                    });
+                } else {
+                    remote.dialog.showMessageBox({
+                        type: 'warning',
+                        title: 'fdFlow',
+                        message: '警告!',
+                        detail: '项目名字不能为空!!!',
+                        buttons: ['确定']
+                    });
+                }
+                this.addNewProject = false;
+                this.active = 0;
             }
-            this.addNewProject = false;
-            this.active = 0;
         }
     },
     created: function () {

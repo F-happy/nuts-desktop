@@ -12,10 +12,11 @@ const createTask = require(`${__dirname}/tasks/create`),
       serverTask = require(`${__dirname}/tasks/server`),
       buildTask  = require(`${__dirname}/tasks/build`);
 
-module.exports.store = {
-    settingProjectName: 'global',
+module.exports = {
+    settingProjectPath: 'global',
     activeProjectName: '',
-    taskList: {}
+    taskList: {},
+    newProjectLock: false
 };
 
 module.exports.insertProject = (projectPath, callback)=> {
@@ -56,13 +57,18 @@ module.exports.deleteProject = (delProjectPath, callback)=> {
     });
 };
 
+module.exports.startServer = (workspace, port, config)=> {
+    serverTask.serverStart(workspace, port);
+    devTask(workspace, config);
+};
+
 // 本地保存的数据结构
 // fdFlow = {
-//     "workspace": "/Users/fuhuixiang/fdFlow_workspace", "projects": {
+//     "workspace": "/Users/fuhuixiang/fdFlow_workspace",
+//     "projects": {
 //         "welcome_example": {
 //             "path": "/Users/fuhuixiang/fdFlow_workspace/welcome_example"
-//         }
-//         ,
+//         },
 //         "welcome_example2": {
 //             "path": "/Users/fuhuixiang/fdFlow_workspace/welcome_example"
 //         }
