@@ -14,6 +14,17 @@
             <template v-else>
                 <header class="header-title">项目</header>
                 <ul class="project-lists">
+                    <!--下面这个 li 是后面新建项目的输入框-->
+                    <li class="list input-ing active" v-if="addNewProject">
+                        <div class="icon-finder iconfont"></div>
+                        <div class="project-info">
+                            <h3 class="project-name" @keyup.enter="handleFocus">
+                                <input type="text" class="add-project-input" title="新项目名称" @blur="handleFocus" autofocus="autofocus"/>
+                            </h3>
+                        </div>
+                        <div class="list-info-img"></div>
+                    </li>
+                    <!--这里开始循环真正的项目列表-->
                     <li :class="['list', {active: active === index}]" v-for="(value, key, index) in taskList" @click.stop="activeView(index, key)">
                         <div class="icon-finder iconfont" @click.stop="openProjectFinder(value)"></div>
                         <div class="project-info">

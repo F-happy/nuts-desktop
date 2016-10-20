@@ -15,7 +15,7 @@ module.exports = Vue.extend({
                     </section>
                     <section class="tools">
                         <div class="tool-btn">
-                            <span class="tool-add iconfont icon-jia"></span>
+                            <span class="tool-add iconfont icon-jia" @click="createProject"></span>
                             <span class="tool-del iconfont icon-jian" @click="deleteProject"></span>
                             <span class="tool-find iconfont icon-wenjianjia">
                                 <input class="input-open" id="jsOpenProject" type="file" webkitdirectory multiple>
@@ -35,17 +35,18 @@ module.exports = Vue.extend({
         }
     },
     created: function () {
-        // debugger
         this.bottomView = !isEmpty(this.projects);
     },
     methods: {
         openSetting: function () {
             this.$parent.showSettingView = true;
         },
+        createProject: function () {
+            this.$parent.createProject();
+        },
         deleteProject: function () {
-            // debugger
             let deletePath = store.taskList[store.activeProjectName]['path'];
-            store.deleteProject(deletePath, (storage)=>{
+            store.deleteProject(deletePath, (storage)=> {
                 this.$parent.initView(storage.projects);
             });
         }

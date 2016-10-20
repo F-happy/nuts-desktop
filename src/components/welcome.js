@@ -18,7 +18,7 @@ module.exports = Vue.extend({
     methods: {
         addExample: function() {
             let workspace = path.join(remote.app.getPath(controller.defaultPath), controller.workspace);
-            store.openProject(path.join(workspace, 'welcome_example'), (projects)=> {
+            store.insertProject(path.join(workspace, 'welcome_example'), (projects)=> {
                 let {storage, projectPath} = projects;
                 store.createTask(projectPath);
                 this.$parent.initView(storage.projects);

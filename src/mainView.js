@@ -44,6 +44,7 @@ new Vue({
         taskList: {},
         running: false,
         showSettingView: false,
+        addNewProject: false
     },
     components: {
         // <nuts-component> 只能用在父组件模板内
@@ -67,6 +68,31 @@ new Vue({
         initView: function (newStorage) {
             this.taskList = store.taskList = newStorage;
             this.shouldShowWelcome = isEmpty(newStorage);
+        },
+        createProject: function () {
+            this.addNewProject = true;
+            this.active = -1;
+        },
+        handleFocus: function (e) {
+            let inputStr = e.target.value;
+            if (inputStr) {
+                let workspace = path.join(remote.app.getPath(controller.defaultPath), controller.workspace);
+                store.insertProject(path.join(workspace, inputStr), (projects)=> {
+                    let {storage, projectPath} = projects;
+                    store.createTask(projectPath);
+                    this.initView(storage.projects);
+                });
+            } else {
+                remote.dialog.showMessageBox({
+                    type: 'warning',
+                    title: 'fdFlow',
+                    message: '警告!',
+                    detail: '项目名字不能为空!!!',
+                    buttons: ['确定']
+                });
+            }
+            this.addNewProject = false;
+            this.active = 0;
         }
     },
     created: function () {

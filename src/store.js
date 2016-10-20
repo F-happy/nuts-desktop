@@ -18,7 +18,7 @@ module.exports.store = {
     taskList: {}
 };
 
-module.exports.openProject = (projectPath, callback)=> {
+module.exports.insertProject = (projectPath, callback)=> {
     let storage = controller.getStorage();
     let projectName = path.basename(projectPath);
 
@@ -33,9 +33,6 @@ module.exports.openProject = (projectPath, callback)=> {
             storage['projects'][projectName] = {};
             storage['projects'][projectName]['path'] = projectPath;
             controller.setStorage(storage);
-
-            //插入打开的项目
-            // insertOpenProject({projectPath: {path: projectPath}});
             callback({storage, projectPath});
         }
     }
