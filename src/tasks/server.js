@@ -17,6 +17,7 @@ class Server {
             host: selfIP(),
             livereload: livereload
         });
+        return selfIP();
     }
 
     serverStop(ip, port) {

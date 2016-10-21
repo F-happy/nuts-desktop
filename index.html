@@ -25,17 +25,19 @@
                         <div class="list-info-img"></div>
                     </li>
                     <!--这里开始循环真正的项目列表-->
-                    <li :class="['list', {active: active === index}]" v-for="(value, key, index) in taskList" @click.stop="activeView(index, key)">
+                    <li :class="['list', {active: active === index}, {running: !!dev[key] && active === index}]"
+                        v-for="(value, key, index) in taskList" @click.stop="activeView(index, key)">
                         <div class="icon-finder iconfont" @click.stop="openProjectFinder(value)"></div>
                         <div class="project-info">
                             <h3 class="project-name">{{key}}</h3>
-                            <p class="project-location" v-if="active === index">{{value.path}}</p>
+                            <p class="project-location" v-if="active === index && !dev[key]">{{value.path}}</p>
+                            <p v-if="!!dev[key]" class="project-point">http://{{dev[key].ip}}:{{dev[key].port}}</p>
                         </div>
                         <div :class="['list-info-img', active === index ? 'icon-xinxi iconfont' : '']" @click="openSetting(value)"></div>
                     </li>
                 </ul>
             </template>
-            <nuts-footer :running="running" :projects="taskList"></nuts-footer>
+            <nuts-footer :running="running"></nuts-footer>
             <nuts-setting v-if="showSettingView"></nuts-setting>
         </article>
         <script src="./src/mainView.js"></script>

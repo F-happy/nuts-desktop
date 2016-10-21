@@ -1,7 +1,7 @@
 {
   "name": "nuts-desktop",
   "productName": "fdFlow",
-  "version": "1.0.0-alpha3",
+  "version": "1.0.0-alpha4",
   "description": "nuts desktop",
   "main": "main.js",
   "scripts": {
@@ -32,7 +32,7 @@
     "vue": "^2.0.0"
   },
   "dependencies": {
-    "babel-core": "^6.16.0",
+    "babel-core": "^6.17.0",
     "babel-loader": "^6.2.5",
     "babel-preset-es2015": "^6.16.0",
     "gulp": "github:gulpjs/gulp#4.0",

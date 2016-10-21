@@ -44,7 +44,10 @@ new Vue({
         taskList: {},
         running: false,
         showSettingView: false,
-        addNewProject: false
+        addNewProject: false,
+        dev: {
+            // key: {ip: null, port:null}
+        }
     },
     components: {
         // <nuts-component> 只能用在父组件模板内
@@ -56,6 +59,7 @@ new Vue({
         activeView: function (num, name) {
             this.active = num;
             store.activeProjectName = name;
+            this.running = !!this.dev[name];
         },
         openProjectFinder: function (value) {
             // 打开本地文件夹 https://github.com/electron/electron/blob/master/docs-translations/zh-CN/api/shell.md
