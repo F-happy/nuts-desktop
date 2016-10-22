@@ -7,7 +7,8 @@
         <link rel="stylesheet" href="assets/css/main.css">
         <title>fdFlow</title>
     </head>
-    <body>
+    <!--http://electron.atom.io/docs/api/frameless-window/#draggable-region-->
+    <body style="-webkit-app-region: drag;padding-top: 20px">
         <article id="app">
             <!--这里是vue的绑定点-->
             <nuts-welcome v-if="shouldShowWelcome"></nuts-welcome>

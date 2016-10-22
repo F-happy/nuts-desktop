@@ -4,6 +4,7 @@
 "use strict";
 const path = require('path');
 const controller = require(`${__dirname}/controller`);
+const isEmpty = require(`${__dirname}/util/is_empty_object`);
 
 // 开始导入命令脚本
 const createTask = require(`${__dirname}/tasks/create`),
@@ -12,12 +13,15 @@ const createTask = require(`${__dirname}/tasks/create`),
       serverTask = require(`${__dirname}/tasks/server`),
       buildTask  = require(`${__dirname}/tasks/build`);
 
+let watcherLists = {};
+
 // 全局状态机
 module.exports = {
     settingProjectPath: 'global',
     activeProjectName: '',
     taskList: {},
-    newProjectLock: false
+    newProjectLock: false,
+    watcherList: watcherLists
 };
 
 /**
@@ -81,7 +85,7 @@ module.exports.deleteProject = (delProjectPath, callback)=> {
  */
 module.exports.startServer = (workspace, port, config, cb)=> {
     let ip = serverTask.serverStart(workspace, port);
-    devTask(workspace, config);
+    watcherLists[path.basename(workspace)] = devTask(workspace, config);
     cb(ip);
 };
 
@@ -92,6 +96,20 @@ module.exports.startServer = (workspace, port, config, cb)=> {
  */
 module.exports.startBuild = (workspace, config)=> {
     buildTask(workspace, config);
+};
+
+/**
+ * 停止开发模式
+ * @param name
+ */
+module.exports.stopServer = (name)=> {
+    watcherLists[name].forEach((v)=> {
+        v.close();
+    });
+    delete watcherLists[name];
+    if (isEmpty(watcherLists)) {
+        serverTask.serverStop();
+    }
 };
 
 // 本地保存的数据结构

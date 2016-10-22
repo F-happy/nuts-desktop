@@ -46,7 +46,7 @@ module.exports = (projectDir, config)=> {
     compassFile(`${projectDir}/*.html`, `${projectDir}/fd_dev/`);
 
     // 监听文件变动
-    taskWatch(projectDir, `${projectDir}/fd_dev/`, path.basename(projectDir));
+    return taskWatch(projectDir, `${projectDir}/fd_dev/`, path.basename(projectDir));
 };
 
 /**
@@ -57,23 +57,26 @@ module.exports = (projectDir, config)=> {
  */
 function taskWatch(devDir, outDir, proName) {
 
+    let watcher = [];
     //监控js代码是否改变
-    core.watch(`${devDir}/js/*.js`).on('all', (event, filePath, stats)=> {
+    watcher.push(core.watch(`${devDir}/js/*.js`).on('all', (event, filePath, stats)=> {
         console.log(`文件 ${filePath} 触发 ${event} 事件，重新编译中。。。`);
         es6ToEs5(filePath, `${outDir}/js`, path.basename(proName));
-    });
+    }));
 
     //监控样式表是否改动
-    core.watch(`${devDir}/scss/*.scss`).on('all', (event, filePath, stats)=> {
+    watcher.push(core.watch(`${devDir}/scss/*.scss`).on('all', (event, filePath, stats)=> {
         console.log(`文件 ${filePath} 触发 ${event} 事件，重新编译中。。。`);
         compassSass(filePath, `${outDir}/css`);
-    });
+    }));
 
     // 监控静态文件是否变更
-    core.watch(`${devDir}/*.html`).on('all', (event, filePath, stats)=> {
+    watcher.push(core.watch(`${devDir}/*.html`).on('all', (event, filePath, stats)=> {
         console.log(`文件 ${filePath} 触发 ${event} 事件，重新编译中。。。`);
         compassFile(filePath, outDir);
-    });
+    }));
+
+    return watcher;
 }
 
 /**

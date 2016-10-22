@@ -29,7 +29,8 @@ function createWindow() {
         maximizable: false,
         fullscreen: false, // 全屏化按钮不可用
         autoHideMenuBar: false, // 除非点击 Alt，否则隐藏菜单栏
-        // titleBarStyle: 'hidden',
+        titleBarStyle: 'hidden',
+        backgroundColor: '#fff'
     });
 
     // 并且装载应用的index.html页面

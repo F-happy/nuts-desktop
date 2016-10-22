@@ -41,6 +41,10 @@ button:focus, input:focus {
     outline: none;
 }
 
+input::selection {
+    background: #fff;
+}
+
 li {
     list-style: none;
     padding: 0;

@@ -75,7 +75,7 @@ new Vue({
             store.activeProjectName = Object.keys(newStorage).pop();
             this.taskList = store.taskList = newStorage;
             this.shouldShowWelcome = isEmpty(newStorage);
-            this.active--;
+            this.active = Object.keys(newStorage).length - 1;
         },
         createProject: function () {
             this.addNewProject = true;

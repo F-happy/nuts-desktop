@@ -1,4 +1,5 @@
 /**
+ * 本地静态服务器模块
  * Created by fuhuixiang on 16-8-27.
  */
 "use strict";
@@ -20,9 +21,8 @@ class Server {
         return selfIP();
     }
 
-    serverStop(ip, port) {
+    serverStop() {
         try {
-            // connectPlugin.server({port: port, host: ip});
             connectPlugin.serverClose();
         } catch (e) {
             console.log(e);
