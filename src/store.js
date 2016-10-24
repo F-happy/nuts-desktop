@@ -7,11 +7,12 @@ const controller = require(`${__dirname}/controller`);
 const isEmpty = require(`${__dirname}/util/is_empty_object`);
 
 // 开始导入命令脚本
-const createTask = require(`${__dirname}/tasks/create`),
-      delTask    = require(`${__dirname}/tasks/clean`),
-      devTask    = require(`${__dirname}/tasks/dev`),
-      serverTask = require(`${__dirname}/tasks/server`),
-      buildTask  = require(`${__dirname}/tasks/build`);
+const createTask  = require(`${__dirname}/tasks/create`),
+      delTask     = require(`${__dirname}/tasks/clean`),
+      devTask     = require(`${__dirname}/tasks/dev`),
+      includeTask = require(`${__dirname}/tasks/include`),
+      serverTask  = require(`${__dirname}/tasks/server`),
+      buildTask   = require(`${__dirname}/tasks/build`);
 
 let watcherLists = {};
 
@@ -110,6 +111,14 @@ module.exports.stopServer = (name)=> {
     if (isEmpty(watcherLists)) {
         serverTask.serverStop();
     }
+};
+
+/**
+ * 引入静态资源
+ * @param workspace
+ */
+module.exports.includeStatic = (workspace)=> {
+    includeTask(workspace);
 };
 
 // 本地保存的数据结构

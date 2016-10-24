@@ -7,6 +7,7 @@ const electron = require('electron');
 const remote = electron.remote;
 const path = require('path');
 const Vue = require('vue');
+// const Vue = require('vue/dist/vue.min');
 const fs = require('fs');
 
 const controller = require(`${__dirname}/src/controller`);

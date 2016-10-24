@@ -1,7 +1,7 @@
 {
   "name": "nuts-desktop",
   "productName": "fdFlow",
-  "version": "1.0.0-alpha5",
+  "version": "1.0.0-alpha6",
   "description": "nuts desktop",
   "main": "main.js",
   "scripts": {
@@ -38,9 +38,9 @@
     "gulp": "github:gulpjs/gulp#4.0",
     "gulp-connect": "^5.0.0",
     "gulp-plumber": "^1.1.0",
-    "gulp-rename": "^1.2.2",
     "gulp-replace-pro": "^1.0.1",
     "gulp-sass": "^2.3.2",
+    "node-json-file": "^1.0.0",
     "nuts-scss": "^1.2.0",
     "through2": "^2.0.1",
     "webpack-stream": "^3.2.0"

@@ -6,47 +6,52 @@
 const firFiles      = require('../util/get_dir_file'),
       replacePlugin = require('gulp-replace-pro'),
       core          = require('gulp'),
+      path          = require('path'),
       fs            = require('fs');
 
-controller.packages._core.task('include', ()=> {
+module.exports = (projectDir)=> {
+    let proName      = path.basename(projectDir),
+        firstInclude = true,
+        _staticData  = '';
 
-    let proName     = controller.arguments()._name,
-        devDir      = `${controller.config.sourceDir}/${proName}`,
-        _staticData = '';
-
-    if (!proName) {
-        console.log('请输入项目名称');
-        return null;
-    }
     /**
      * 读取 images 文件夹下所有的文件的相对路径,
      * 然后通过正则匹配出文件名,然后新建出静态资源文件进行存储
      * 最后在主 scss 文件中引入新建的静态资源文件。
      */
-    firFiles(`${devDir}/images/`, (err, files)=> {
+    firFiles(`${projectDir}/images/`, (err, files)=> {
         if (err) {
             console.log(`${err.path}目录不存在`);
             return null;
         }
-        files.forEach((v)=> {
-            let _name = v.split(`${devDir}/images/`)[1];
-            _staticData += `$${_name.match(/(\w+)\.\w+$/)[1].replace(/_/g, '-')}: url(../images/${_name}); \n`;
-        });
-        if (!!_staticData) {
-            fs.appendFile(`${devDir}/scss/_static.scss`, _staticData, 'utf8', (err)=> {
-                if (err) {
-                    console.log(err);
-                } else {
-                    console.log('_static文件创建完成');
-                    core.src(`${devDir}/scss/${controller.config.activity ? proName.split('/')[1] : proName}.scss`)
-                        .pipe(replacePlugin({
-                            '@charset "utf-8";': `@charset "utf-8";\n@import "static";`,
-                        }))
-                        .pipe(core.dest(`${devDir}/scss/`));
+        fs.readFile(`${projectDir}/scss/_static.scss`, 'utf8', (err, data)=> {
+            if (!err) {
+                _staticData = data.toString();
+                firstInclude = false;
+            }
+            files.forEach((v)=> {
+                let _name     = v.split(`${projectDir}/images/`)[1],
+                    writeText = `$${_name.match(/(\w+)\.\w+$/)[1].replace(/_/g, '-')}: url(../images/${_name}); \n`;
+                if (_staticData.indexOf(writeText) === -1) {
+                    _staticData += writeText;
                 }
             });
-        } else {
-            console.log(`目录内没有静态资源`);
-        }
+            if (!!_staticData) {
+                fs.writeFile(`${projectDir}/scss/_static.scss`, _staticData, 'utf8', (err)=> {
+                    if (err) {
+                        console.log(err);
+                    } else if (firstInclude) {
+                        console.log('_static文件创建完成');
+                        core.src(`${projectDir}/scss/${path.basename(proName)}.scss`)
+                            .pipe(replacePlugin({
+                                '@charset "utf-8";': `@charset "utf-8";\n@import "static";`,
+                            }))
+                            .pipe(core.dest(`${projectDir}/scss/`));
+                    }
+                });
+            } else {
+                console.log(`目录内没有静态资源`);
+            }
+        });
     });
-});
+};

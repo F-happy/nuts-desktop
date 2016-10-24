@@ -8,9 +8,9 @@ const core          = require('gulp'),
       plumberPlugin = require('gulp-plumber'),
       connectPlugin = require('gulp-connect'),
       streamPlugin  = require('webpack-stream'),
-      renamePlugin  = require('gulp-rename'),
       sassPlugin    = require('gulp-sass'),
       replacePlugin = require('gulp-replace-pro'),
+      renamePlugin  = require('../util/rename'),
       controller    = require('../controller');
 
 let devConfig  = {},

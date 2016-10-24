@@ -7,8 +7,8 @@
 const fs            = require("fs"),
       path          = require('path'),
       core          = require('gulp'),
-      renamePlugin  = require('gulp-rename'),
       replacePlugin = require('gulp-replace-pro'),
+      renamePlugin  = require('../util/rename'),
       mkdirs        = require('../util/mkdirs'),
       config        = require('../../fdflow.config.json'),
       timeFormat    = require('../util/date_format');

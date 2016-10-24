@@ -11,8 +11,9 @@ const isEmpty = require(`../util/is_empty_object`);
 module.exports = Vue.extend({
     template: `<footer>
                     <section class="btn-box" v-if="bottomView">
-                        <button :class="['dev-btn', {'dev-running': running}]" @click="beginDev">{{running?'监听中...':'开发'}}</button>
-                        <button :class="['build-btn', {'dev-running': building}]" @click="beginBuild">{{building?'编译中...':'生产编译'}}</button>
+                        <button :class="{'dev-running': running}" @click="beginDev">{{running?'监听中...':'开发'}}</button>
+                        <button :class="{'dev-running': include}" @click="includeBtn">{{include?'导入中...':'导入'}}</button>
+                        <button :class="{'dev-running': building}" @click="beginBuild">{{building?'编译中...':'生产编译'}}</button>
                     </section>
                     <section class="tools">
                         <div class="tool-btn">
@@ -25,7 +26,7 @@ module.exports = Vue.extend({
                         </div>
                         <div class="tool-state">
                             <span class="state-text"><!--Done--></span>
-                            <span :class="['iconfont', 'icon-yunxing', (running || building)?'state-done':'state-running']"></span>
+                            <span :class="['iconfont', 'icon-yunxing', (running || building || include)?'state-done':'state-running']"></span>
                         </div>
                     </section>
                 </footer>`,
@@ -33,6 +34,7 @@ module.exports = Vue.extend({
     data: ()=> {
         return {
             bottomView: false,
+            include: false,
             building: false
         }
     },
@@ -94,6 +96,16 @@ module.exports = Vue.extend({
             store.insertProject(finder, (data)=> {
                 this.$parent.initView(data.storage.projects);
             });
+        },
+        includeBtn: function () {
+            let {taskList, activeProjectName} = store;
+            let workspace = taskList[activeProjectName].path;
+            this.include = true;
+            store.includeStatic(workspace);
+            let timeId = setTimeout(()=> {
+                this.include = false;
+                clearTimeout(timeId);
+            }, 1500);
         }
     }
 });

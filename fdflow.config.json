@@ -5,7 +5,6 @@
     "staticDir": "static",
     "serverPort": 2333,
     "sourceDir": "src",
-    "distDir": "dist",
     "name": "example",
     "title": "exampleTitle",
     "replaceStr": 666,
