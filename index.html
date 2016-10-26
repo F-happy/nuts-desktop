@@ -13,7 +13,7 @@
             <!--这里是vue的绑定点-->
             <nuts-welcome v-if="shouldShowWelcome"></nuts-welcome>
             <template v-else>
-                <header class="header-title">项目</header>
+                <header :class="['header-title',{'filter':showSettingView}]">项目</header>
                 <ul class="project-lists">
                     <!--下面这个 li 是后面新建项目的输入框-->
                     <li class="list input-ing active" v-if="addNewProject">
@@ -26,7 +26,10 @@
                         <div class="list-info-img"></div>
                     </li>
                     <!--这里开始循环真正的项目列表-->
-                    <li :class="['list', {active: active === index}, {running: !!dev[key] && active === index}]"
+                    <li :class="['list',
+                        {active: active === index},
+                        {running: !!dev[key] && active === index},
+                        {'filter':showSettingView}]"
                         v-for="(value, key, index) in taskList" @click.stop="activeView(index, key)">
                         <div class="icon-finder iconfont" @click.stop="openProjectFinder(value)"></div>
                         <div class="project-info">
@@ -38,7 +41,7 @@
                     </li>
                 </ul>
             </template>
-            <nuts-footer :running="running"></nuts-footer>
+            <nuts-footer :running="running" :filter="showSettingView"></nuts-footer>
             <nuts-setting v-if="showSettingView"></nuts-setting>
         </article>
         <script src="./src/mainView.js"></script>

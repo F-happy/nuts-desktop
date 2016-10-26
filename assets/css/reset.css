@@ -49,3 +49,7 @@ li {
     list-style: none;
     padding: 0;
 }
+
+.filter {
+    filter: blur(5px);
+}

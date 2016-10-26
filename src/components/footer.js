@@ -9,7 +9,7 @@ const store = require(`../store`);
 const isEmpty = require(`../util/is_empty_object`);
 
 module.exports = Vue.extend({
-    template: `<footer>
+    template: `<footer :class="{'filter':filter}">
                     <section class="btn-box" v-if="bottomView">
                         <button :class="{'dev-running': running}" @click="beginDev">{{running?'监听中...':'开发'}}</button>
                         <button :class="{'dev-running': include}" @click="includeBtn">{{include?'导入中...':'导入'}}</button>
@@ -30,7 +30,7 @@ module.exports = Vue.extend({
                         </div>
                     </section>
                 </footer>`,
-    props: ['running'],
+    props: ['running', 'filter'],
     data: ()=> {
         return {
             bottomView: false,

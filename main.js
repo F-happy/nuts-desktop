@@ -1,12 +1,8 @@
 /**
  * Created by fuhuixiang on 16-8-26.
  */
-const electron = require('electron');
-// 控制应用生命周期的模块
-const {app} = electron;
-// 创建本地浏览器窗口的模块
-const {BrowserWindow} = electron;
-
+// 控制应用生命周期的模块, 创建本地浏览器窗口的模块
+const {app, BrowserWindow} = require('electron');
 const path = require('path');
 
 // 指向窗口对象的一个全局引用，如果没有这个引用，那么当该javascript对象被垃圾回收的
@@ -16,8 +12,6 @@ let win;
 // 设置软件名称
 app.setName('fdFlow');
 
-const logo = path.join(__dirname, 'assets/img/fd.png');
-
 function createWindow() {
     // 创建一个新的浏览器窗口
     win = new BrowserWindow({
@@ -25,7 +19,7 @@ function createWindow() {
         minHeight: 572,
         resizable: false,
         title: 'fdFlow',
-        icon: logo,
+        icon: path.join(__dirname, 'assets/img/fd.png'),
         maximizable: false,
         fullscreen: false, // 全屏化按钮不可用
         autoHideMenuBar: false, // 除非点击 Alt，否则隐藏菜单栏
