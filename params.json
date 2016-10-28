@@ -1,0 +1,6 @@
+{
+  "name": "Nuts-desktop",
+  "tagline": "this is nuts workflow GUI",
+  "body": "# nuts-desktop\r\nthis is nuts workflow GUI\r\n\r\n## 界面预览\r\n![workflow](./view.png)\r\n\r\n\r\n## 开发环境\r\n\r\n* Electron 版本：v1.4.3\r\n* Node 版本 ：v6.6.0\r\n",
+  "note": "Don't delete this file! It's used internally to help with page regeneration."
+}
