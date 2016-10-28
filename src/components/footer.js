@@ -26,7 +26,7 @@ module.exports = Vue.extend({
                         </div>
                         <div class="tool-state">
                             <span class="state-text"><!--Done--></span>
-                            <span :class="['iconfont', 'icon-yunxing', (running || building || include)?'state-done':'state-running']"></span>
+                            <span :class="['iconfont icon-yunxing', (running || building || include)?'':'state-done']"></span>
                         </div>
                     </section>
                 </footer>`,

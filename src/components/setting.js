@@ -7,7 +7,7 @@ const Vue = require('vue');
 const jsonTool = require('node-json-file');
 const store = require(`../store`);
 
-let config = null;
+let config = {};
 
 module.exports = Vue.extend({
     template: `<article class="setting-view">
@@ -17,40 +17,37 @@ module.exports = Vue.extend({
             </header>
             <h2 class="setting-title">工作区路径</h2>
             <div class="setting-workspace">
-                <input type="text" 
-                    title="工作区路径" 
-                    :value="defaultWorkSpace" 
-                    disabled="false"/>
+                <input type="text" title="工作区路径" :value="defaultWorkSpace" disabled="false"/>
             </div>
             <h2 class="setting-title">功能</h2>
             <ul class="setting-list">
                 <li>
-                    <span :class="['iconfont', 'icon-xuanze', needCDN ? 'setting-active':'']" 
+                    <span :class="['iconfont icon-xuanze', needCDN ? 'setting-active':'']" 
                         @click="handleChange($event, 'cdn')"></span>
-                    <span class="list-text">编译时是否需要添加 CDN</span>
+                    <span>编译时是否需要添加 CDN</span>
                 </li>
                 <li>
-                    <span :class="['iconfont', 'icon-xuanze', openLiveReload ? 'setting-active':'']" 
+                    <span :class="['iconfont icon-xuanze', openLiveReload ? 'setting-active':'']" 
                         @click="handleChange($event, 'live')"></span>
-                    <span class="list-text">开启 LiveReload 开发模式自动刷新</span>
+                    <span>开启 LiveReload 开发模式自动刷新</span>
                 </li>
             </ul>
             <h2 class="setting-title">默认设置</h2>
             <ul class="setting-list">
                 <li>
-                    <div class="list-input-box setting-input">
+                    <div class="list-input-box">
                         <input type="text" :value="defaultAuthor" @blur="handleChange($event, 'name')">
                     </div>
                     <span class="label">项目作者</span>
                 </li>
                 <li>
-                    <div class="list-input-box setting-input">
+                    <div class="list-input-box">
                         <input type="text" :value="defaultCDNPath" @blur="handleChange($event, 'path')">
                     </div>
                     <span class="label">默认的CDN路径</span>
                 </li>
                 <li>
-                    <div class="list-input-box setting-input">
+                    <div class="list-input-box">
                         <input type="text" :value="defaultReplaceStr" @blur="handleChange($event, 'replace')">
                     </div>
                     <span class="label">代码中的占位符为 @@replace</span>
@@ -64,25 +61,35 @@ module.exports = Vue.extend({
             </ul>
         </article>`,
     data: function () {
-        let settingPath = store.settingProjectPath;
+        let settingPath       = store.settingProjectPath,
+            defaultAuthor     = '',
+            defaultCDNPath    = '',
+            defaultReplaceStr = '',
+            defaultSassLib    = [],
+            needCDN           = '';
         try {
             if (settingPath === 'global') {
-                config = require(`${process.cwd()}/fdflow.config.json`);
+                config = jsonTool(`${process.cwd()}/fdflow.config.json`);
             } else {
                 config = jsonTool(`${settingPath}/fdflow.config.json`);
             }
+            defaultAuthor = config.select('author');
+            defaultCDNPath = config.select('staticURL');
+            defaultReplaceStr = config.select('replaceStr');
+            defaultSassLib = config.select('sassLib');
+            needCDN = config.select('needCDN');
         } catch (e) {
-            alert('配置文件不存在！！!');
             this.$parent.showSettingView = false;
+            alert('配置文件不存在！！!');
         }
         return {
             defaultWorkSpace: settingPath === 'global' ? '全局配置文件' : settingPath,
-            defaultAuthor: config.select('author'),
-            defaultCDNPath: config.select('staticURL'),
-            defaultReplaceStr: config.select('replaceStr'),
-            defaultSassLib: (config.select('sassLib') || []).join(','),
+            defaultAuthor: defaultAuthor,
+            defaultCDNPath: defaultCDNPath,
+            defaultReplaceStr: defaultReplaceStr,
+            defaultSassLib: defaultSassLib.join(','),
             openLiveReload: true,
-            needCDN: config.select('needCDN'),
+            needCDN: needCDN,
             shouldSave: false
         }
     },

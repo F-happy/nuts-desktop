@@ -7,8 +7,7 @@
         <link rel="stylesheet" href="assets/css/main.css">
         <title>fdFlow</title>
     </head>
-    <!--http://electron.atom.io/docs/api/frameless-window/#draggable-region-->
-    <body style="-webkit-app-region: drag;padding-top: 20px">
+    <body>
         <article id="app">
             <!--这里是vue的绑定点-->
             <nuts-welcome v-if="shouldShowWelcome"></nuts-welcome>
@@ -34,8 +33,9 @@
                         <div class="icon-finder iconfont" @click.stop="openProjectFinder(value)"></div>
                         <div class="project-info">
                             <h3 class="project-name">{{key}}</h3>
-                            <p class="project-location" v-if="active === index && !dev[key]">{{value.path}}</p>
-                            <p v-if="!!dev[key]" class="project-point">http://{{dev[key].ip}}:{{dev[key].port}}</p>
+                            <p class="project-location" v-if="active === index">
+                                {{!!dev[key]? 'http://'+dev[key].ip+':'+dev[key].port : value.path}}
+                            </p>
                         </div>
                         <div :class="['list-info-img', active === index ? 'icon-xinxi iconfont' : '']" @click="openSetting(value)"></div>
                     </li>

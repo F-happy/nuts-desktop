@@ -7,7 +7,6 @@ html {
     -webkit-text-size-adjust: none;
     -webkit-appearance: none;
     line-height: 1;
-    /*font-family: "Helvetica Neue", Helvetica, STHeiTi, sans-serif;*/
     font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
     -webkit-user-select: none;
 }
@@ -21,8 +20,10 @@ html, body, div, p, header, button, ul, li, h3 {
 }
 
 body {
+    padding-top: 20px;
+    /*http://electron.atom.io/docs/api/frameless-window/#draggable-region*/
+    -webkit-app-region: drag;
     -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
-    -webkit-overflow-scrolling: touch;
 }
 
 button {
