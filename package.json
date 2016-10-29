@@ -1,7 +1,7 @@
 {
   "name": "nuts-desktop",
   "productName": "fdFlow",
-  "version": "1.0.0-Alpha8",
+  "version": "1.0.0-beta1",
   "description": "nuts desktop",
   "main": "main.js",
   "scripts": {

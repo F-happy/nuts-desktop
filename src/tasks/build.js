@@ -1,4 +1,7 @@
 /**
+ * 编译选中的项目
+ * @param workspace
+ * @param config
  * Created by fuhuixiang on 16-8-28.
  */
 "use strict";

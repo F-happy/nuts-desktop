@@ -5,7 +5,6 @@
 "use strict";
 const path = require('path');
 const Vue = require('vue');
-const store = require(`../store`);
 const controller = require('../controller');
 
 module.exports = Vue.extend({
@@ -17,11 +16,11 @@ module.exports = Vue.extend({
                </article>`,
     methods: {
         addExample: function() {
-            let workspace = path.join(remote.app.getPath(controller.defaultPath), controller.workspace);
-            store.insertProject(path.join(workspace, 'welcome_example'), (projects)=> {
+            controller.insertProject(path.join(controller.getState('workspace'), 'welcome_example'), (projects)=> {
                 let {storage, projectPath} = projects;
-                store.createTask(projectPath);
-                this.$parent.initView(storage.projects);
+                controller.sendMessage('nuts-create', {projectPath: projectPath}, ()=>{
+                    this.$parent.initView(storage.projects);
+                });
             });
         }
     }

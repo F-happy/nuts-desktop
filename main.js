@@ -2,18 +2,30 @@
  * Created by fuhuixiang on 16-8-26.
  */
 // 控制应用生命周期的模块, 创建本地浏览器窗口的模块
-const {app, BrowserWindow} = require('electron');
+const {app, BrowserWindow, ipcMain} = require('electron');
 const path = require('path');
+const isEmpty = require('./src/util/is_empty_object');
+
+// 开始导入命令脚本
+const createTask  = require('./src/tasks/create'),
+      delTask     = require('./src/tasks/clean'),
+      devTask     = require('./src/tasks/dev'),
+      includeTask = require('./src/tasks/include'),
+      serverTask  = require('./src/tasks/server'),
+      buildTask   = require('./src/tasks/build');
 
 // 指向窗口对象的一个全局引用，如果没有这个引用，那么当该javascript对象被垃圾回收的
 // 时候该窗口将会自动关闭
 let win;
 
+// 全局自动化任务队列
+let watcherQueue = {};
+
 // 设置软件名称
 app.setName('fdFlow');
 
+// 创建一个新的浏览器窗口
 function createWindow() {
-    // 创建一个新的浏览器窗口
     win = new BrowserWindow({
         width: 400,
         minHeight: 572,
@@ -59,4 +71,49 @@ app.on('activate', () => {
     if (win === null) {
         createWindow();
     }
+});
+
+// 任务监听部分
+ipcMain.on('nuts-build', (event, param)=> {
+    let {workspace, config, from} = param;
+    buildTask(workspace, config);
+    event.sender.send(from, 'success');
+});
+
+ipcMain.on('nuts-create', (event, param)=> {
+    let {projectPath, from} = param;
+    createTask(projectPath);
+    event.sender.send(from, 'success');
+});
+
+ipcMain.on('nuts-include', (event, param)=> {
+    let {workspace, from} = param;
+    includeTask(workspace);
+    event.sender.send(from, 'success');
+});
+
+ipcMain.on('nuts-delete', (event, param)=> {
+    let {delPath, from} = param;
+    delTask(delPath, (projectDir)=> {
+        event.sender.send(from, projectDir);
+    });
+});
+
+ipcMain.on('nuts-start-server', (event, param)=> {
+    let {workspace, port, config, from} = param;
+    let ip = serverTask.serverStart(workspace, port);
+    watcherQueue[path.basename(workspace)] = devTask(workspace, config);
+    event.sender.send(from, ip);
+});
+
+ipcMain.on('nuts-stop-server', (event, param)=> {
+    let {name, from} = param;
+    watcherQueue[name].forEach((v)=> {
+        v.close();
+    });
+    delete watcherLists[name];
+    if (isEmpty(watcherLists)) {
+        serverTask.serverStop();
+    }
+    event.sender.send(from, 'success');
 });

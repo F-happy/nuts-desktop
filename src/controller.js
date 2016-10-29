@@ -3,21 +3,30 @@
  */
 "use strict";
 const path    = require('path'),
-      webpack = require('webpack'),
-      fs      = require('fs');
+      webpack = require('webpack');
+
+const {ipcRenderer, shell, remote} = require('electron');
+
+// 全局状态机
+let globalState = {
+    settingProjectPath: 'global',
+    activeProjectName: '',
+    taskList: {},
+    newProjectLock: false,
+    workspace: ''
+};
 
 class Controller {
     constructor() {
         this.name = 'fdFlow';
         this.root = path.join(__dirname, '../');
-        this.exampleName = 'fdFlow_example';
         this.workspace = `${this.name}_workspace`;
         this.platform = process.platform;
         this.defaultPath = this.platform === 'win32' ? 'desktop' : 'home';
     }
 
-    getName() {
-        console.log(this.defaultPath);
+    getPath(path) {
+        return remote.app.getPath(path)
     }
 
     getStorage() {
@@ -39,6 +48,67 @@ class Controller {
         if (storage) {
             storage.removeItem(this.name);
         }
+    }
+
+    sendMessage(msg, param, callback) {
+
+        // 这里使用随机数来防止回调监听重复的问题，类似 jsonp 的请求。
+        let id = 'build-reply-' + Math.round(100 * Math.random());
+        param['from'] = id;
+        ipcRenderer.send(msg, param);
+        ipcRenderer.once(id, function (event, data) {
+            callback(data);
+        });
+    }
+
+    /**
+     * 新增项目（状态机中新增，实际文件增加在 createTask 函数中执行）
+     * @param projectPath
+     * @param callback
+     */
+    insertProject(projectPath, callback) {
+        let storage = this.getStorage();
+        let projectName = path.basename(projectPath);
+
+        if (storage && storage['workspace']) {
+            if (!storage['projects']) {
+                storage['projects'] = {};
+            }
+
+            if (storage['projects'][projectName]) {
+                alert('项目已存在');
+            } else {
+                storage['projects'][projectName] = {};
+                storage['projects'][projectName]['path'] = projectPath;
+                this.setStorage(storage);
+                callback({storage, projectPath});
+            }
+        }
+    }
+
+    getState(key = null) {
+        if (globalState.hasOwnProperty(key)) {
+            return globalState[key]
+        } else {
+            return globalState;
+        }
+    }
+
+    setState(key, value) {
+        globalState[key] = value;
+    }
+
+    openFinder(path) {
+        // 打开本地文件夹 https://github.com/electron/electron/blob/master/docs-translations/zh-CN/api/shell.md
+        shell.showItemInFolder(path);
+    }
+
+    openNativeBrowser(url) {
+        shell.openExternal(url);
+    }
+
+    showMessageBox(options){
+        remote.dialog.showMessageBox(options);
     }
 
     webpackConfig(devType) {

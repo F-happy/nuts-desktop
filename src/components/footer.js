@@ -4,8 +4,8 @@
  */
 "use strict";
 const Vue = require('vue');
-const electron = require('electron');
-const store = require(`../store`);
+const path = require('path');
+const controller = require('../controller');
 const isEmpty = require(`../util/is_empty_object`);
 
 module.exports = Vue.extend({
@@ -39,7 +39,7 @@ module.exports = Vue.extend({
         }
     },
     created: function () {
-        this.bottomView = !isEmpty(store.taskList);
+        this.bottomView = !isEmpty(controller.getState('taskList'));
     },
     methods: {
         openSetting: function () {
@@ -49,12 +49,21 @@ module.exports = Vue.extend({
             this.$parent.createProject();
         },
         deleteProject: function () {
-            store.deleteProject(store.taskList[store.activeProjectName]['path'], (storage)=> {
+            let delProjectPath = controller.getState('taskList')[controller.getState('activeProjectName')]['path'];
+            controller.sendMessage('nuts-delete', {delPath: delProjectPath}, ()=> {
+                let storage = controller.getStorage();
+                let storageProject = storage.projects;
+                for (let i in storageProject) {
+                    if (i === path.basename(projectDir)) {
+                        delete storage.projects[i];
+                    }
+                }
+                controller.setStorage(storage);
                 this.$parent.initView(storage.projects);
             });
         },
         beginDev: function () {
-            let {taskList, activeProjectName} = store;
+            let {taskList, activeProjectName} = controller.getState();
             let workspace = taskList[activeProjectName].path, config = {}, devObj = this.$parent.dev;
             if (!this.running) {
                 try {
@@ -64,19 +73,21 @@ module.exports = Vue.extend({
                     return null;
                 }
                 config.serverPort += Object.keys(taskList).indexOf(activeProjectName);
-                store.startServer(workspace, config.serverPort, config, (ip)=> {
-                    this.$parent.running = true;
-                    this.$parent.$set(devObj, activeProjectName, {port: config.serverPort, ip: ip});
-                    electron.shell.openExternal(`http://${ip}:${config.serverPort}`);
-                });
+                controller.sendMessage('nuts-start-server',
+                    {workspace: workspace, port: config.serverPort, config: config}, (ip)=> {
+                        this.$parent.running = true;
+                        this.$parent.$set(devObj, activeProjectName, {port: config.serverPort, ip: ip});
+                        controller.openNativeBrowser(`http://${ip}:${config.serverPort}`);
+                    });
             } else {
-                this.$parent.running = false;
-                this.$parent.$delete(devObj, activeProjectName);
-                store.stopServer(activeProjectName);
+                controller.sendMessage('nuts-stop-server', {name: activeProjectName}, ()=> {
+                    this.$parent.running = false;
+                    this.$parent.$delete(devObj, activeProjectName);
+                });
             }
         },
         beginBuild: function () {
-            let {taskList, activeProjectName} = store;
+            let {taskList, activeProjectName} = controller.getState();
             let workspace = taskList[activeProjectName].path, config = {};
             try {
                 config = require(`${workspace}/fdflow.config.json`);
@@ -85,27 +96,29 @@ module.exports = Vue.extend({
                 return null;
             }
             this.building = true;
-            store.startBuild(workspace, config);
-            let timeId = setTimeout(()=> {
-                this.building = false;
-                clearTimeout(timeId);
-            }, 1500);
+            controller.sendMessage('nuts-build', {workspace: workspace, config: config}, ()=> {
+                let timeId = setTimeout(()=> {
+                    this.building = false;
+                    clearTimeout(timeId);
+                }, 1500);
+            });
         },
         insertProject: function (e) {
             let finder = e.target.files.item(0).path;
-            store.insertProject(finder, (data)=> {
+            controller.insertProject(finder, (data)=> {
                 this.$parent.initView(data.storage.projects);
             });
         },
         includeBtn: function () {
-            let {taskList, activeProjectName} = store;
-            let workspace = taskList[activeProjectName].path;
+            let {taskList, activeProjectName} = controller.getState();
             this.include = true;
-            store.includeStatic(workspace);
-            let timeId = setTimeout(()=> {
-                this.include = false;
-                clearTimeout(timeId);
-            }, 1500);
+            controller.sendMessage('nuts-include',
+                {workspace: taskList[activeProjectName].path}, ()=> {
+                    let timeId = setTimeout(()=> {
+                        this.include = false;
+                        clearTimeout(timeId);
+                    }, 1500);
+                });
         }
     }
 });

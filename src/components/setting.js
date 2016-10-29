@@ -5,7 +5,7 @@
 "use strict";
 const Vue = require('vue');
 const jsonTool = require('node-json-file');
-const store = require(`../store`);
+const controller = require('../controller');
 
 let config = {};
 
@@ -61,7 +61,7 @@ module.exports = Vue.extend({
             </ul>
         </article>`,
     data: function () {
-        let settingPath       = store.settingProjectPath,
+        let settingPath       = controller.getState('settingProjectPath'),
             defaultAuthor     = '',
             defaultCDNPath    = '',
             defaultReplaceStr = '',
