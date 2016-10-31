@@ -16,11 +16,13 @@ const core          = require('gulp'),
       taskIf        = require('../util/stream_if'),
       controller    = require('../controller');
 
-let buildConfig = {};
+let buildConfig = {},
+    styleType   = 'css';
 
 module.exports = (projectDir, config)=> {
 
     buildConfig = config;
+    styleType = config.style === 'scss' ? 'scss' : 'css';
 
     // 判断参数是否合法
     getVersion(projectDir, (result) => {
@@ -37,24 +39,18 @@ module.exports = (projectDir, config)=> {
  */
 function outDist(buildDir, nowVersion, devDir) {
 
-    let distStaticDir = `${buildDir}/${buildConfig.staticDir}/${nowVersion}`,
-        staticURL     = buildConfig.needCDN ? buildConfig.staticURL : `../${buildConfig.staticDir}`,
+    let distStaticDir = `${buildDir}/static/${nowVersion}`,
+        staticURL     = buildConfig.needCDN ? buildConfig.staticURL : `../static`,
         buildCDNDir   = `${staticURL}/${path.basename(devDir)}/${nowVersion}`,
         buildName     = path.basename(buildDir);
 
     // 部署并压缩javaScript脚本文件
-    fs.readdir(`${devDir}/js`, (err)=> {
-        if (err) {
-            console.log('js路径不存在');
-        } else {
-            core.src(`${devDir}/js/*.js`)
-                .pipe(streamPlugin(controller.webpackConfig()))
-                .pipe(renamePlugin(`${buildName}.min.js`))
-                .pipe(taskIf(buildConfig.needCDN, replacePlugin('(\.\.\/\i|\i)mages', `${buildCDNDir}/images`)))
-                .pipe(replacePlugin({'@@replace': buildConfig.replaceStr || ''}))
-                .pipe(core.dest(`${distStaticDir}/js/`));
-        }
-    });
+    core.src(`${devDir}/js/*.js`)
+        .pipe(taskIf(buildConfig.target === 'ES6', streamPlugin(controller.webpackConfig())))
+        .pipe(renamePlugin(`${buildName}.min.js`))
+        .pipe(taskIf(buildConfig.needCDN, replacePlugin('(\.\.\/\i|\i)mages', `${buildCDNDir}/images`)))
+        .pipe(replacePlugin({'@@replace': buildConfig.replaceStr || ''}))
+        .pipe(core.dest(`${distStaticDir}/js/`));
 
     // 部署需要用到的图片，若没有图片则目录不存在
     // 部署需要用到的字体文件，若没有字体文件则目录不存在
@@ -66,35 +62,30 @@ function outDist(buildDir, nowVersion, devDir) {
         .pipe(core.dest(`${distStaticDir}/font/`));
 
     // 部署并压缩需要用到的样式表文件，并且替换样式表中的本地资源为CDN资源
-    fs.readdir(`${devDir}/scss`, (err)=> {
-        if (err) {
-            console.log('scss路径不存在');
+    let sassList  = buildConfig.sassLib || [],
+        inputList = [];
+    sassList.forEach((v)=> {
+        if (!!path.parse(v).dir) {
+            inputList.push(v);
         } else {
-            let sassList  = buildConfig.sassLib || [],
-                inputList = [];
-            sassList.forEach((v)=> {
-                if (!!path.parse(v).dir) {
-                    inputList.push(v);
-                } else {
-                    try {
-                        inputList = inputList.concat(require(v).includePaths);
-                    } catch (err) {
-                        console.log(`没有找到 ${v} 库`);
-                    }
-                }
-            });
-            core.src(`${devDir}/scss/*.scss`)
-                .pipe(sassPlugin({
-                    includePaths: inputList,
-                    outputStyle: 'compressed'
-                }))
-                .pipe(taskIf(buildConfig.needCDN, replacePlugin({
-                    '../images/': `${buildCDNDir}/images/`,
-                    '../font/': `${buildCDNDir}/font/`
-                })))
-                .pipe(core.dest(`${distStaticDir}/css/`));
+            try {
+                inputList = inputList.concat(require(v).includePaths);
+            } catch (err) {
+                console.log(`没有找到 ${v} 库`);
+            }
         }
     });
+    core.src(`${devDir}/${styleType}/*.${styleType}`)
+        .pipe(taskIf(buildConfig.style === 'scss', sassPlugin({
+            includePaths: inputList,
+            outputStyle: 'compressed'
+        })))
+        .pipe(taskIf(buildConfig.needCDN, replacePlugin({
+            '../images/': `${buildCDNDir}/images/`,
+            '../font/': `${buildCDNDir}/font/`
+        })))
+        .pipe(core.dest(`${distStaticDir}/css/`));
+
 
     // 部署html文件，并替换文件中的静态资源
     core.src(`${devDir}/*.html`)

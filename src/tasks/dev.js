@@ -10,21 +10,24 @@ const core          = require('gulp'),
       streamPlugin  = require('webpack-stream'),
       sassPlugin    = require('gulp-sass'),
       replacePlugin = require('gulp-replace-pro'),
+      taskIf        = require('../util/stream_if'),
       renamePlugin  = require('../util/rename'),
       controller    = require('../controller');
 
 let devConfig  = {},
-    devDirList = [];
+    devDirList = [],
+    styleType  = 'css';
 
 module.exports = (projectDir, config)=> {
 
     devConfig = config;
+    styleType = config.style === 'scss' ? 'scss' : 'css';
     //初始化函数
     devDirList = fs.readdirSync(projectDir);
-    if (devDirList.indexOf('scss') != -1) {
-        compassSass(`${projectDir}/scss/*.scss`, `${projectDir}/fd_dev/css`);
+    if (devDirList.indexOf(styleType) != -1) {
+        compassSass(`${projectDir}/${styleType}/*.${styleType}`, `${projectDir}/fd_dev/css`);
     } else {
-        console.log('scss路径不存在');
+        console.log(`${styleType}路径不存在`);
     }
 
     if (devDirList.indexOf('js') != -1) {
@@ -65,7 +68,7 @@ function taskWatch(devDir, outDir, proName) {
     }));
 
     //监控样式表是否改动
-    watcher.push(core.watch(`${devDir}/scss/*.scss`).on('all', (event, filePath, stats)=> {
+    watcher.push(core.watch(`${devDir}/${styleType}/*.${styleType}`).on('all', (event, filePath, stats)=> {
         console.log(`文件 ${filePath} 触发 ${event} 事件，重新编译中。。。`);
         compassSass(filePath, `${outDir}/css`);
     }));
@@ -100,7 +103,7 @@ function compassSass(input, output) {
     });
     core.src(input)
         .pipe(plumberPlugin())
-        .pipe(sassPlugin({includePaths: inputList}))
+        .pipe(taskIf(devConfig.style === 'scss', sassPlugin({includePaths: inputList})))
         .pipe(connectPlugin.reload())
         .pipe(core.dest(output));
 }
@@ -114,7 +117,7 @@ function compassSass(input, output) {
 function es6ToEs5(input, output, proName) {
     core.src(input)
         .pipe(plumberPlugin())
-        .pipe(streamPlugin(controller.webpackConfig('dev')))
+        .pipe(taskIf(devConfig.target === 'ES6', streamPlugin(controller.webpackConfig('dev'))))
         .pipe(renamePlugin(`${proName}.min.js`))
         .pipe(replacePlugin('@@replace', devConfig.replaceStr || ''))
         .pipe(connectPlugin.reload())

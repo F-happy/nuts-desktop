@@ -48,13 +48,15 @@ function* createProject(devDir, name) {
     yield core.src(`${templetPath}/index.html`)
         .pipe(replacePlugin({
             '@@main': name,
-            '@@title': config.title
+            '@@title': `${name}Title`
         }))
         .pipe(core.dest(`${devDir}/`));
 
-    yield core.src(`${templetPath}/scss/main.scss`)
-        .pipe(renamePlugin(`${name}.scss`))
-        .pipe(core.dest(`${devDir}/scss`));
+    let styleType = config.style === 'scss' ? 'scss' : 'css';
+
+    yield core.src(`${templetPath}/${styleType}/main.${styleType}`)
+        .pipe(renamePlugin(`${name}.${styleType}`))
+        .pipe(core.dest(`${devDir}/${styleType}`));
 
     yield core.src(`${templetPath}/js/main.tmpl`)
         .pipe(replacePlugin({

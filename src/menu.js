@@ -3,6 +3,7 @@
  */
 "use strict";
 const Menu = require('electron').remote.Menu;
+const remote = require('electron').remote;
 
 let template = [
     {
@@ -111,7 +112,7 @@ let template = [
                 label: '调试模式',
                 accelerator: 'Option+CmdOrCtrl+I',
                 click: function () {
-                    remote.getCurrentWindow().webContents.toggleDevTools();
+                    require('electron').remote.getCurrentWindow().webContents.toggleDevTools();
                 }
             }
         ]

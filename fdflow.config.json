@@ -2,11 +2,10 @@
     "author": "fdFlow",
     "needCDN": false,
     "staticURL": "http://cdn.jonnyf.com",
-    "staticDir": "static",
     "serverPort": 2333,
     "sourceDir": "src",
-    "name": "example",
-    "title": "exampleTitle",
     "replaceStr": 666,
+    "style": "scss",
+    "target": "ES6",
     "sassLib": ["nuts-scss"]
 }

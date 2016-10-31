@@ -56,21 +56,21 @@ fdFlow = {
     // 默认的CDN路径
     "staticURL": "http://cdn.jonnyf.com",
     
-    // 目标路径中静态文件需要放置的目录
-    "staticDir": "static",
-    
     // 本地开发服务器监听的端口号
     "serverPort": 2333,
     
     // 开发环境中的源码路径
     "sourceDir": "src",
     
-    // 开发环境中需要开发的项目名称
-    "name": "example",
-    
     // 代码中的字符串替换内容
     "replaceStr": 666,
     
+    // 样式预编译支持版本
+    "style": "css",
+
+    // JavaScript 版本
+    "target": "ES6",
+
     // 引入的 sass 库,默认采用了 nuts-scss 库,使用时需要先安装。传入的值需要是一个数组。
     // 'sassLib': []
     "sassLib": [

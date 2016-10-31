@@ -22,6 +22,16 @@ module.exports = Vue.extend({
             <h2 class="setting-title">功能</h2>
             <ul class="setting-list">
                 <li>
+                    <span :class="['iconfont icon-xuanze', supScss ? 'setting-active':'']"
+                        @click="handleChange($event, 'style')"></span>
+                    <span>是否支持 SCSS 样式预编译</span>
+                </li>
+                <li>
+                    <span :class="['iconfont icon-xuanze', supES6 ? 'setting-active':'']"
+                        @click="handleChange($event, 'es6')"></span>
+                    <span>是否支持 ECMA2015 版本</span>
+                </li>
+                <li>
                     <span :class="['iconfont icon-xuanze', needCDN ? 'setting-active':'']" 
                         @click="handleChange($event, 'cdn')"></span>
                     <span>编译时是否需要添加 CDN</span>
@@ -65,6 +75,8 @@ module.exports = Vue.extend({
             defaultAuthor     = '',
             defaultCDNPath    = '',
             defaultReplaceStr = '',
+            defaultsupES6     = '',
+            defaultsupStyle   = '',
             defaultSassLib    = [],
             needCDN           = '';
         try {
@@ -77,6 +89,8 @@ module.exports = Vue.extend({
             defaultCDNPath = config.select('staticURL');
             defaultReplaceStr = config.select('replaceStr');
             defaultSassLib = config.select('sassLib');
+            defaultsupES6 = config.select('target');
+            defaultsupStyle = config.select('style');
             needCDN = config.select('needCDN');
         } catch (e) {
             this.$parent.showSettingView = false;
@@ -90,6 +104,8 @@ module.exports = Vue.extend({
             defaultSassLib: defaultSassLib.join(','),
             openLiveReload: true,
             needCDN: needCDN,
+            supES6: defaultsupES6 === 'ES6',
+            supScss: defaultsupStyle === 'scss',
             shouldSave: false
         }
     },
@@ -100,6 +116,17 @@ module.exports = Vue.extend({
                 case 'cdn':
                     this.needCDN = !this.needCDN;
                     config.update('needCDN', !this.needCDN);
+                    this.shouldSave = true;
+                    break;
+                case 'style':
+                    this.supScss = !this.supScss;
+                    config.update('style', this.supScss ? 'scss' : 'css');
+                    this.shouldSave = true;
+                    break;
+                case 'es6':
+                    this.supES6 = !this.supES6;
+                    config.update('target', this.supES6 ? 'ES6' : 'ES5');
+                    this.shouldSave = true;
                     break;
                 case 'live':
                     this.openLiveReload = !this.openLiveReload;
