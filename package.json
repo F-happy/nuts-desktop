@@ -1,7 +1,7 @@
 {
   "name": "nuts-desktop",
   "productName": "fdFlow",
-  "version": "1.0.0-beta1",
+  "version": "1.0.0-beta2",
   "description": "nuts desktop",
   "main": "main.js",
   "scripts": {
@@ -29,6 +29,7 @@
   "devDependencies": {
     "electron-packager": "^8.1.0",
     "electron-prebuilt": "^1.4.3",
+    "node-fetch": "^1.6.3",
     "vue": "^2.0.0"
   },
   "dependencies": {

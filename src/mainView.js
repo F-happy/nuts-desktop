@@ -35,7 +35,8 @@ if (!controller.getStorage()) {
 // 初始化整个页面
 Vue.config.devtools = false;
 
-new Vue({
+// 这里将主页面的 vue 对象暴露到 window 全局中，方便 Menu 组件调用。
+window.mainVue = new Vue({
     el: '#app',
     data: {
         shouldShowWelcome: true,
