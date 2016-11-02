@@ -3,9 +3,7 @@
  * Created by fuhuixiang on 16-10-17.
  */
 "use strict";
-const Vue = require('vue');
 const jsonTool = require('node-json-file');
-const controller = require('../controller');
 
 let config = {};
 

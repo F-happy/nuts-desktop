@@ -111,8 +111,8 @@ ipcMain.on('nuts-stop-server', (event, param)=> {
     watcherQueue[name].forEach((v)=> {
         v.close();
     });
-    delete watcherLists[name];
-    if (isEmpty(watcherLists)) {
+    delete watcherQueue[name];
+    if (isEmpty(watcherQueue)) {
         serverTask.serverStop();
     }
     event.sender.send(from, 'success');

@@ -3,9 +3,7 @@
  * Created by fuhuixiang on 16-10-10.
  */
 "use strict";
-const Vue = require('vue');
 const path = require('path');
-const controller = require('../controller');
 const isEmpty = require(`../util/is_empty_object`);
 
 module.exports = Vue.extend({
@@ -54,7 +52,7 @@ module.exports = Vue.extend({
                 let storage = controller.getStorage();
                 let storageProject = storage.projects;
                 for (let i in storageProject) {
-                    if (i === path.basename(projectDir)) {
+                    if (i === path.basename(delProjectPath)) {
                         delete storage.projects[i];
                     }
                 }

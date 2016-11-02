@@ -4,8 +4,6 @@
  */
 "use strict";
 const path = require('path');
-const Vue = require('vue');
-const controller = require('../controller');
 
 module.exports = Vue.extend({
     template: `<article class="welcome">
