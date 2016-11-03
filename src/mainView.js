@@ -4,8 +4,8 @@
 "use strict";
 
 const path = require('path');
-// const Vue = require('vue');
-const Vue = require('vue/dist/vue.min');
+const Vue = require('vue');
+// const Vue = require('vue/dist/vue.min');
 const fs = require('fs');
 
 const controller = require(`${__dirname}/src/controller`);

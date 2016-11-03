@@ -1,16 +1,16 @@
 {
   "name": "nuts-desktop",
   "productName": "fdFlow",
-  "version": "1.0.0-beta2",
+  "version": "1.0.0-beta3",
   "description": "nuts desktop",
   "main": "main.js",
   "scripts": {
     "start": "./node_modules/.bin/electron main.js",
-    "build:linux32": "rm -rf dist && electron-packager ./ fdFlow --platform=linux --arch=ia32 --icon=./assets/img/fd.icns --overwrite --out ./dist/$npm_package_version --version=1.4.3 --ignore='(.github|.DS_Store)'",
-    "build:linux64": "rm -rf dist && electron-packager ./ fdFlow --platform=linux --arch=x64 --icon=./assets/img/fd.icns --overwrite --out ./dist/$npm_package_version --version=1.4.3 --ignore='(.github|.DS_Store)'",
-    "build:mac": "rm -rf dist && electron-packager ./ fdFlow --platform=darwin --arch=x64 --icon=./assets/img/fd.icns --overwrite --out ./dist/$npm_package_version --version=1.4.3 --ignore='(.github|.DS_Store)'",
-    "build:win32": "rm -rf dist && electron-packager ./ fdFlow --platform=win32 --arch=ia32 --icon=./assets/img/fd.png --overwrite --out ./dist --version=1.4.3 --ignore=.github",
-    "build:win64": "rm -rf dist && electron-packager ./ fdFlow --platform=win32 --arch=x64 --icon=./assets/img/fd.png --overwrite --out ./dist --version=1.4.3 --ignore=.github",
+    "build:linux32": "rm -rf dist && electron-packager ./ fdFlow --platform=linux --arch=ia32 --icon=./assets/img/fd.icns --overwrite --out ./dist/$npm_package_version --version=1.4.5 --ignore='(.github|.DS_Store)'",
+    "build:linux64": "rm -rf dist && electron-packager ./ fdFlow --platform=linux --arch=x64 --icon=./assets/img/fd.icns --overwrite --out ./dist/$npm_package_version --version=1.4.5 --ignore='(.github|.DS_Store)'",
+    "build:mac": "rm -rf dist && electron-packager ./ fdFlow --platform=darwin --arch=x64 --icon=./assets/img/fd.icns --overwrite --out ../fdflow/dist/$npm_package_version --version=1.4.5 --ignore='(.github|.DS_Store)'",
+    "build:win32": "rm -rf dist && electron-packager ./ fdFlow --platform=win32 --arch=ia32 --icon=./assets/img/fd.png --overwrite --out ./dist --version=1.4.5 --ignore=.github",
+    "build:win64": "rm -rf dist && electron-packager ./ fdFlow --platform=win32 --arch=x64 --icon=./assets/img/fd.png --overwrite --out ./dist --version=1.4.5 --ignore=.github",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -27,15 +27,14 @@
   "author": "jonnyf",
   "license": "MIT",
   "devDependencies": {
-    "electron-packager": "^8.1.0",
-    "electron-prebuilt": "^1.4.3",
-    "node-fetch": "^1.6.3",
-    "vue": "^2.0.0"
+    "electron": "^1.4.5",
+    "electron-packager": "^8.2.0",
+    "electron-prebuilt": "^1.4.5"
   },
   "dependencies": {
-    "babel-core": "^6.17.0",
-    "babel-loader": "^6.2.5",
-    "babel-preset-es2015": "^6.16.0",
+    "babel-core": "^6.18.2",
+    "babel-loader": "^6.2.7",
+    "babel-preset-es2015": "^6.18.0",
     "gulp": "github:gulpjs/gulp#4.0",
     "gulp-connect": "^5.0.0",
     "gulp-plumber": "^1.1.0",
@@ -44,6 +43,8 @@
     "node-json-file": "^1.0.0",
     "nuts-scss": "^1.2.0",
     "through2": "^2.0.1",
+    "node-fetch": "^1.6.3",
+    "vue": "^2.0.0",
     "webpack-stream": "^3.2.0"
   }
 }

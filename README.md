@@ -26,8 +26,8 @@
 
 ## 开发环境
 
-* Electron 版本：v1.4.3
-* Node 版本 ：v6.6.0
+* Electron 版本：v1.4.5
+* Node 版本 ：v6.9.1
 
 # 本地保存的数据结构
 ```javascript
