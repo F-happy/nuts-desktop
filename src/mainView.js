@@ -4,8 +4,6 @@
 "use strict";
 
 const path = require('path');
-const Vue = require('vue');
-// const Vue = require('vue/dist/vue.min');
 const fs = require('fs');
 
 const controller = require(`${__dirname}/src/controller`);
@@ -111,7 +109,10 @@ window.mainVue = new Vue({
     created: function () {
         this.taskList = controller.getStorage().projects;
         controller.setState('taskList', this.taskList);
-        controller.setState('activeProjectName', Object.keys(this.taskList)[0]);
+        let initList = Object.keys(this.taskList);
+        if (initList.length !== 0) {
+            controller.setState('activeProjectName', initList[0]);
+        }
         this.shouldShowWelcome = isEmpty(this.taskList);
     }
 });

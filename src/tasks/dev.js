@@ -89,16 +89,12 @@ function taskWatch(devDir, outDir, proName) {
  */
 function compassSass(input, output) {
     let sassList  = devConfig.sassLib || [],
-        inputList = [];
+        inputList = require('../util/out_scss_path').includePaths;
     sassList.forEach((v)=> {
         if (!!path.parse(v).dir) {
             inputList.push(v);
         } else {
-            try {
-                inputList = inputList.concat(require(v).includePaths);
-            } catch (err) {
-                console.log(`没有找到 ${v} 库`);
-            }
+            console.log(`没有找到 ${v} 库`);
         }
     });
     core.src(input)

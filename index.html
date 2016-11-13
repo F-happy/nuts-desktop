@@ -8,7 +8,7 @@
         <title>fdFlow</title>
     </head>
     <body>
-        <article id="app">
+        <article id="app" v-cloak>
             <!--这里是vue的绑定点-->
             <nuts-welcome v-if="shouldShowWelcome"></nuts-welcome>
             <template v-else>
@@ -41,9 +41,10 @@
                     </li>
                 </ul>
             </template>
-            <nuts-footer :running="running" :filter="showSettingView"></nuts-footer>
+            <nuts-footer :running="running" :filter="showSettingView" :show="!shouldShowWelcome"></nuts-footer>
             <nuts-setting v-if="showSettingView"></nuts-setting>
         </article>
+        <script src="./assets/vue.min.js"></script>
         <script src="./src/mainView.js"></script>
         <script src="./src/menu.js"></script>
     </body>

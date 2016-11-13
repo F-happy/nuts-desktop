@@ -17,6 +17,7 @@ const createTask  = require('./src/tasks/create'),
 // 指向窗口对象的一个全局引用，如果没有这个引用，那么当该javascript对象被垃圾回收的
 // 时候该窗口将会自动关闭
 let win;
+let logo = path.join(__dirname, 'assets/img/fd.png');
 
 // 全局自动化任务队列
 let watcherQueue = {};
@@ -31,7 +32,7 @@ function createWindow() {
         minHeight: 572,
         resizable: false,
         title: 'fdFlow',
-        icon: path.join(__dirname, 'assets/img/fd.png'),
+        icon: logo,
         maximizable: false,
         fullscreen: false, // 全屏化按钮不可用
         autoHideMenuBar: false, // 除非点击 Alt，否则隐藏菜单栏

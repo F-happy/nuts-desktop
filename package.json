@@ -17,6 +17,24 @@
     "type": "git",
     "url": "git+https://github.com/F-happy/nuts-desktop.git"
   },
+  "build": {
+    "appId": "com.jonnyf.fdflow",
+    "mac": {
+      "icon": "build/icon.icns",
+      "category": "publish.app-category.jonnyf-design"
+    },
+    "dmg": {
+      "background": "build/background.png",
+      "icon": "build/icon.icns",
+      "window": {
+        "width": 800,
+        "height": 400
+      }
+    },
+    "win": {
+      "iconUrl": "https://raw.githubusercontent.com/F-happy/nuts-desktop/master/assets/img/fd.ico"
+    }
+  },
   "keywords": [
     "work",
     "gulp",
@@ -28,6 +46,7 @@
   "license": "MIT",
   "devDependencies": {
     "electron": "^1.4.5",
+    "electron-builder": "^7.18.0",
     "electron-packager": "^8.2.0",
     "electron-prebuilt": "^1.4.5"
   },

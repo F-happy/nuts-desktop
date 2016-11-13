@@ -54,3 +54,7 @@ li {
 .filter {
     filter: blur(5px);
 }
+
+[v-cloak] {
+    display: none;
+}

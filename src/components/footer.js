@@ -8,7 +8,7 @@ const isEmpty = require(`../util/is_empty_object`);
 
 module.exports = Vue.extend({
     template: `<footer :class="{'filter':filter}">
-                    <section class="btn-box" v-if="bottomView">
+                    <section class="btn-box" v-if="bottomView || show">
                         <button :class="{'dev-running': running}" @click="beginDev">{{running?'监听中...':'开发'}}</button>
                         <button :class="{'dev-running': include}" @click="includeBtn">{{include?'导入中...':'导入'}}</button>
                         <button :class="{'dev-running': building}" @click="beginBuild">{{building?'编译中...':'生产编译'}}</button>
@@ -28,7 +28,7 @@ module.exports = Vue.extend({
                         </div>
                     </section>
                 </footer>`,
-    props: ['running', 'filter'],
+    props: ['running', 'filter', 'show'],
     data: ()=> {
         return {
             bottomView: false,
@@ -58,6 +58,7 @@ module.exports = Vue.extend({
                 }
                 controller.setStorage(storage);
                 this.$parent.initView(storage.projects);
+                this.bottomView = !isEmpty(storage.projects);
             });
         },
         beginDev: function () {
