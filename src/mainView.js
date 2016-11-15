@@ -107,7 +107,7 @@ window.mainVue = new Vue({
         }
     },
     created: function () {
-        this.taskList = controller.getStorage().projects;
+        this.taskList = controller.getStorage().projects || {};
         controller.setState('taskList', this.taskList);
         let initList = Object.keys(this.taskList);
         if (initList.length !== 0) {
