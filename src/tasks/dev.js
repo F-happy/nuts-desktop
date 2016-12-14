@@ -25,7 +25,7 @@ module.exports = (projectDir, config)=> {
     //初始化函数
     devDirList = fs.readdirSync(projectDir);
     if (devDirList.indexOf(styleType) != -1) {
-        compassSass(`${projectDir}/${styleType}/*.${styleType}`, `${projectDir}/fd_dev/css`);
+        compassStyle(`${projectDir}/${styleType}/*.${styleType}`, `${projectDir}/fd_dev/css`);
     } else {
         console.log(`${styleType}路径不存在`);
     }
@@ -70,7 +70,7 @@ function taskWatch(devDir, outDir, proName) {
     //监控样式表是否改动
     watcher.push(core.watch(`${devDir}/${styleType}/*.${styleType}`).on('all', (event, filePath, stats)=> {
         console.log(`文件 ${filePath} 触发 ${event} 事件，重新编译中。。。`);
-        compassSass(filePath, `${outDir}/css`);
+        compassStyle(filePath, `${outDir}/css`);
     }));
 
     // 监控静态文件是否变更
@@ -87,7 +87,7 @@ function taskWatch(devDir, outDir, proName) {
  * @param input
  * @param output
  */
-function compassSass(input, output) {
+function compassStyle(input, output) {
     let sassList  = devConfig.sassLib || [],
         inputList = require('../util/out_scss_path').includePaths;
     sassList.forEach((v)=> {
