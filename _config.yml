@@ -1,0 +1,8 @@
+title: Nuts-desktop
+description: this is nuts workflow GUI
+google_analytics: 
+show_downloads: true
+theme: jekyll-theme-architect
+
+gems:
+  - jekyll-mentions
