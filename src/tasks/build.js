@@ -8,9 +8,11 @@
 const core          = require('gulp'),
       path          = require('path'),
       fs            = require('fs'),
+      webpack       = require('webpack'),
       streamPlugin  = require('webpack-stream'),
       sassPlugin    = require('gulp-sass'),
       replacePlugin = require('gulp-replace-pro'),
+      touch         = require('../util/touch'),
       renamePlugin  = require('../util/rename'),
       getVersion    = require('../util/get_now_version'),
       taskIf        = require('../util/stream_if'),
@@ -46,7 +48,7 @@ function outDist(buildDir, nowVersion, devDir) {
 
     // 部署并压缩javaScript脚本文件
     core.src(`${devDir}/js/*.js`)
-        .pipe(taskIf(buildConfig.target === 'ES6', streamPlugin(controller.webpackConfig())))
+        .pipe(taskIf(buildConfig.target === 'ES6', streamPlugin(controller.webpackConfig(), webpack)))
         .pipe(renamePlugin(`${buildName}.min.js`))
         .pipe(taskIf(buildConfig.needCDN, replacePlugin('(\.\.\/\i|\i)mages', `${buildCDNDir}/images`)))
         .pipe(replacePlugin({'@@replace': buildConfig.replaceStr || ''}))
@@ -91,5 +93,6 @@ function outDist(buildDir, nowVersion, devDir) {
             'src="js/': `src="${buildCDNDir}/js/`,
             'src="images/': `src="${buildCDNDir}/images/`
         }))
-        .pipe(core.dest(`${devDir}/fd_dist`));
+        .pipe(core.dest(`${devDir}/fd_dist`))
+        .pipe(touch());
 }

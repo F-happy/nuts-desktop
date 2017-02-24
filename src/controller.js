@@ -112,6 +112,10 @@ class Controller {
     }
 
     webpackConfig(devType) {
+
+        // https://github.com/babel/babel-loader/issues/392
+        process.noDeprecation = true;
+
         let _preset = null;
         // 判断当前环境来加载对应的插件
         try {
@@ -122,12 +126,11 @@ class Controller {
         return {
             watch: false,
             module: {
-                loaders: [
+                rules: [
                     {
                         test: /\.js$/,
-                        loader: require.resolve('babel-loader'),
-                        exclude: require('path').resolve(__dirname, '../node_modules/'),
-                        query: {
+                        loader: 'babel-loader',
+                        options: {
                             presets: [_preset]
                         }
                     }
@@ -141,7 +144,7 @@ class Controller {
                 'process.env': {
                     NODE_ENV: '"production"'
                 }
-            }),]
+            }), new webpack.LoaderOptionsPlugin({minimize: true})]
         }
     }
 }

@@ -5,6 +5,7 @@
 const core          = require('gulp'),
       path          = require('path'),
       fs            = require('fs'),
+      webpack       = require('webpack'),
       plumberPlugin = require('gulp-plumber'),
       connectPlugin = require('gulp-connect'),
       streamPlugin  = require('webpack-stream'),
@@ -113,7 +114,7 @@ function compassStyle(input, output) {
 function es6ToEs5(input, output, proName) {
     core.src(input)
         .pipe(plumberPlugin())
-        .pipe(taskIf(devConfig.target === 'ES6', streamPlugin(controller.webpackConfig('dev'))))
+        .pipe(taskIf(devConfig.target === 'ES6', streamPlugin(controller.webpackConfig('dev'), webpack)))
         .pipe(renamePlugin(`${proName}.min.js`))
         .pipe(replacePlugin('@@replace', devConfig.replaceStr || ''))
         .pipe(connectPlugin.reload())
