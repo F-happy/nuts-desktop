@@ -7,15 +7,6 @@ const path    = require('path'),
 
 const {ipcRenderer, shell, remote} = require('electron');
 
-// 全局状态机
-let globalState = {
-    settingProjectPath: 'global',
-    activeProjectName: '',
-    taskList: {},
-    newProjectLock: false,
-    workspace: ''
-};
-
 class Controller {
     constructor() {
         this.name = 'fdFlow';
@@ -84,18 +75,6 @@ class Controller {
                 callback({storage, projectPath});
             }
         }
-    }
-
-    getState(key = null) {
-        if (globalState.hasOwnProperty(key)) {
-            return globalState[key]
-        } else {
-            return globalState;
-        }
-    }
-
-    setState(key, value) {
-        globalState[key] = value;
     }
 
     openFinder(path) {

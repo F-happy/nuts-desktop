@@ -11,19 +11,21 @@
         <article id="app" v-cloak>
             <!--这里是vue的绑定点-->
             <nuts-welcome v-if="shouldShowWelcome"></nuts-welcome>
-            <template v-else>
-                <header :class="['header-title',{'filter':showSettingView}]">项目</header>
-                <ul class="project-lists">
+            <nuts-task v-else
+                       :list="taskList"></nuts-task>
+            <!--<template v-else>-->
+                <!--<header :class="['header-title',{'filter':showSettingView}]">项目</header>-->
+                <!--<ul class="project-lists">-->
                     <!--下面这个 li 是后面新建项目的输入框-->
-                    <li class="list input-ing active" v-if="addNewProject">
-                        <div class="icon-finder iconfont"></div>
-                        <div class="project-info">
-                            <h3 class="project-name" @keyup.enter="handleFocus">
-                                <input type="text" class="add-project-input" title="新项目名称" @blur="handleFocus" autofocus="autofocus"/>
-                            </h3>
-                        </div>
-                        <div class="list-info-img"></div>
-                    </li>
+                    <!--<li class="list input-ing active" v-if="addNewProject">-->
+                        <!--<div class="icon-finder iconfont"></div>-->
+                        <!--<div class="project-info">-->
+                            <!--<h3 class="project-name" @keyup.enter="handleFocus">-->
+                                <!--<input type="text" class="add-project-input" title="新项目名称" @blur="handleFocus" autofocus="autofocus"/>-->
+                            <!--</h3>-->
+                        <!--</div>-->
+                        <!--<div class="list-info-img"></div>-->
+                    <!--</li>-->
                     <!--这里开始循环真正的项目列表-->
                     <li :class="['list',
                         {active: active === index},
@@ -39,12 +41,12 @@
                         </div>
                         <div :class="['list-info-img', active === index ? 'icon-xinxi iconfont' : '']" @click="openSetting(value)"></div>
                     </li>
-                </ul>
-            </template>
+                <!--</ul>-->
+            <!--</template>-->
             <nuts-footer :running="running" :filter="showSettingView" :show="!shouldShowWelcome"></nuts-footer>
             <nuts-setting v-if="showSettingView"></nuts-setting>
         </article>
-        <script src="./assets/vue.2.1.6.min.js"></script>
+        <script src="./assets/vue.2.1.10.min.js"></script>
         <script src="./src/mainView.js"></script>
         <script src="./src/menu.js"></script>
     </body>

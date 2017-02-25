@@ -4,6 +4,7 @@
  */
 "use strict";
 const path = require('path');
+const controller = require('../controller');
 
 module.exports = Vue.extend({
     template: `<article class="welcome">
@@ -14,7 +15,8 @@ module.exports = Vue.extend({
                </article>`,
     methods: {
         addExample: function() {
-            controller.insertProject(path.join(controller.getState('workspace'), 'welcome_example'), (projects)=> {
+            let workspace = path.join(controller.getPath(controller.defaultPath), controller.workspace);
+            controller.insertProject(path.join(workspace, 'welcome_example'), (projects)=> {
                 let {storage, projectPath} = projects;
                 controller.sendMessage('nuts-create', {projectPath: projectPath}, ()=>{
                     this.$parent.initView(storage.projects);
