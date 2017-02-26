@@ -15,6 +15,9 @@ const store = {
     running: false,
     showSettingView: false,
     addNewProject: false,
+    bottomView: false,
+    include: false,
+    building: false,
     dev: {
         // key: {ip: null, port:null}
     }

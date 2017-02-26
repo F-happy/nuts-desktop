@@ -4,6 +4,9 @@
  */
 "use strict";
 const path = require('path');
+const store = require('../store');
+const actions = require('../actions');
+const controller = require('../controller');
 const isEmpty = require(`../util/is_empty_object`);
 
 module.exports = Vue.extend({
@@ -30,14 +33,11 @@ module.exports = Vue.extend({
                 </footer>`,
     props: ['running', 'filter', 'show'],
     data: ()=> {
-        return {
-            bottomView: false,
-            include: false,
-            building: false
-        }
+        return store.globalStore
     },
     created: function () {
-        this.bottomView = !isEmpty(controller.getState('taskList'));
+        Object.assign(this.$data, {bottomView: !isEmpty(store.getStore('taskList'))});
+        // this.bottomView = !isEmpty(store.getStore('taskList'));
     },
     methods: {
         openSetting: function () {
@@ -47,7 +47,7 @@ module.exports = Vue.extend({
             this.$parent.createProject();
         },
         deleteProject: function () {
-            let delProjectPath = controller.getState('taskList')[controller.getState('activeProjectName')]['path'];
+            let delProjectPath = store.getStore('taskList')[store.getStore('activeProjectName')]['path'];
             controller.sendMessage('nuts-delete', {delPath: delProjectPath}, ()=> {
                 let storage = controller.getStorage();
                 let storageProject = storage.projects;
@@ -62,7 +62,7 @@ module.exports = Vue.extend({
             });
         },
         beginDev: function () {
-            let {taskList, activeProjectName} = controller.getState();
+            let {taskList, activeProjectName} = store.getState();
             let workspace = taskList[activeProjectName].path, config = {}, devObj = this.$parent.dev;
             if (!this.running) {
                 try {
@@ -109,7 +109,7 @@ module.exports = Vue.extend({
             });
         },
         includeBtn: function () {
-            let {taskList, activeProjectName} = controller.getState();
+            let {taskList, activeProjectName} = store.getStore();
             this.include = true;
             controller.sendMessage('nuts-include',
                 {workspace: taskList[activeProjectName].path}, ()=> {

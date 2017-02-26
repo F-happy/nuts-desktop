@@ -4,6 +4,7 @@
  */
 "use strict";
 const path = require('path');
+const actions = require('../actions');
 const controller = require('../controller');
 
 module.exports = Vue.extend({
@@ -14,12 +15,12 @@ module.exports = Vue.extend({
                     <button class="welcome-example" @click="addExample">导入示例项目</button>
                </article>`,
     methods: {
-        addExample: function() {
+        addExample() {
             let workspace = path.join(controller.getPath(controller.defaultPath), controller.workspace);
             controller.insertProject(path.join(workspace, 'welcome_example'), (projects)=> {
                 let {storage, projectPath} = projects;
                 controller.sendMessage('nuts-create', {projectPath: projectPath}, ()=>{
-                    this.$parent.initView(storage.projects);
+                    actions({type: 'createView', taskList: storage.projects});
                 });
             });
         }

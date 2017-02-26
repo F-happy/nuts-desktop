@@ -3,13 +3,12 @@
  */
 "use strict";
 
-const path = require('path');
 const fs = require('fs');
+const path = require('path');
 
 const store = require(`${__dirname}/src/store`);
 const actions = require(`${__dirname}/src/actions`);
 const controller = require(`${__dirname}/src/controller`);
-// const isEmpty = require(`${__dirname}/src/util/is_empty_object`);
 
 let workspace = path.join(controller.getPath(controller.defaultPath), controller.workspace);
 store.setStore('workspace', workspace);
@@ -47,27 +46,15 @@ const mainVue = new Vue({
         'nuts-task': require(`${__dirname}/src/components/task`)
     },
     methods: {
-        activeView: function (num, name) {
-            this.$data = actions({type: 'activeView', num: num, name: name});
-        },
-        openProjectFinder: function (value) {
-            this.$data = actions({type: 'openProjectFinder', path: value.path});
-        },
-        openSetting: function (value) {
-            this.$data = actions({type: 'openSetting', path: value.path});
-        },
-        initView: function (newStorage) {
-            this.$data = actions({type: 'initView', newStorage: newStorage});
-        },
-        createProject: function () {
-            this.$data = actions({type: 'createProject'});
-        },
-        handleFocus: function (e) {
-            this.$data = actions({type: 'handleFocus', inputStr: e.target.value});
-        }
+        // initView: function (newStorage) {
+        //     this.$data = actions({type: 'initView', newStorage: newStorage});
+        // },
+        // createProject: function () {
+        //     this.$data = actions({type: 'createProject'});
+        // },
     },
     created: function () {
-        this.$data = actions({type: 'createView', taskList: controller.getStorage().projects || {}});
+        Object.assign(this.$data, actions({type: 'createView', taskList: controller.getStorage().projects || {}}));
     }
 });
 

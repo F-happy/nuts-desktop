@@ -3,11 +3,11 @@
  */
 "use strict";
 const path = require('path');
-const store = require(`${__dirname}/src/store`);
-const controller = require(`${__dirname}/src/controller`);
-const isEmpty = require(`${__dirname}/src/util/is_empty_object`);
+const store = require(`${__dirname}/store`);
+const controller = require(`${__dirname}/controller`);
+const isEmpty = require(`${__dirname}/util/is_empty_object`);
 
-function mainApp(action, oldStore = store.globalStore) => {
+function mainApp(action, oldStore = store.globalStore) {
     switch (action.type) {
         case 'activeView':
             let {num, name} = action;
@@ -27,15 +27,15 @@ function mainApp(action, oldStore = store.globalStore) => {
                 settingProjectPath: !!action['path'] ? action.path : oldStore.settingProjectPath
             });
             break;
-        case 'initView':
-            let {newStorage} = action;
-            return Object.assign({}, oldStore, {
-                activeProjectName: Object.keys(newStorage).pop(),
-                taskList: newStorage,
-                shouldShowWelcome: isEmpty(newStorage),
-                active: Object.keys(newStorage).length - 1
-            });
-            break;
+        // case 'initView':
+        //     let {newStorage} = action;
+        //     return Object.assign({}, oldStore, {
+        //         activeProjectName: Object.keys(newStorage).pop(),
+        //         taskList: newStorage,
+        //         shouldShowWelcome: isEmpty(newStorage),
+        //         active: Object.keys(newStorage).length - 1
+        //     });
+        //     break;
         case 'createProject':
             return Object.assign({}, oldStore, {
                 addNewProject: true,
